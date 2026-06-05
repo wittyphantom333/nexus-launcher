@@ -49,7 +49,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <button
         onClick={() => window.electron.minimize()}
         className="group absolute z-30 w-3.5 h-3.5 rounded-full flex items-center justify-center transition-opacity"
-        style={{ top: '13vh', right: '10vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '13vh', right: '9vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
         title="Minimize"
       >
         <Minus className="w-2.5 h-2.5 text-[#80b0d0] opacity-30 group-hover:opacity-100" />
@@ -57,7 +57,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <button
         onClick={() => window.electron.close()}
         className="group absolute z-30 w-3.5 h-3.5 rounded-full flex items-center justify-center transition-opacity"
-        style={{ top: '13vh', right: '7vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '13.5vh', right: '7vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
         title="Close"
       >
         <X className="w-2.5 h-2.5 text-[#e07070] opacity-30 group-hover:opacity-100" />
