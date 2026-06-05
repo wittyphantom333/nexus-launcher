@@ -1,5 +1,4 @@
 ﻿import { useEffect, useState } from 'react'
-import launcherBg from '../assets/launcher-bg.png'
 import { useStore } from '../store'
 
 const SLIDES_URL =
