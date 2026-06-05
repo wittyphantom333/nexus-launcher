@@ -1,4 +1,8 @@
 {
   "interval": 8,
-  "slides": []
+  "slides": [
+    "https://picsum.photos/id/1015/1920/1080",
+    "https://picsum.photos/id/15/1920/1080",
+    "https://picsum.photos/id/1050/1920/1080"
+  ]
 }
