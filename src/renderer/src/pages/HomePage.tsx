@@ -105,16 +105,17 @@ export default function HomePage() {
       {/* ── Background image slider (fills left content area) ── */}
       <ContentSlider slides={SLIDES} interval={7} />
 
-      {/* NEWS panel
-          Outer div clips — content can't scroll above the drawn NEWS header.
-          Inner div is the actual scroll target. */}
+      {/* NEWS panel — flex column so the inner area scrolls reliably */}
       <div
-        className="absolute overflow-hidden"
-        style={{ right: '5.5vw', top: 0, width: '28vw', height: '80%' }}
+        className="absolute overflow-hidden flex flex-col"
+        style={{ right: '5.5vw', top: 0, width: '28vw', bottom: '14vh' }}
       >
+        {/* transparent spacer — covers drawn NEWS icon+header, clips content above it on scroll */}
+        <div style={{ height: '11.5vh', flexShrink: 0 }} />
+        {/* scrollable feed — min-h-0 required for flex children to scroll */}
         <div
-          className="absolute overflow-y-auto"
-          style={{ top: '11.5vh', left: 0, right: 0, bottom: 0, paddingLeft: '2.5vw', paddingRight: '1vw', paddingBottom: '1vh' }}
+          className="flex-1 overflow-y-auto min-h-0"
+          style={{ paddingLeft: '2.5vw', paddingRight: '0.5vw', paddingBottom: '1vh' }}
         >
           <div className="space-y-5">
           {news.length === 0 && (
