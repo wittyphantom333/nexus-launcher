@@ -48,7 +48,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Window controls — invisible circular hit targets directly over the drawn dots */}
       <button
         onClick={() => window.electron.minimize()}
-        className="absolute z-30 rounded-full transition-colors"
+        className="absolute z-40 rounded-full transition-colors"
         style={{
           top: '13vh', right: '9vw',
           width: 22, height: 22,
@@ -61,9 +61,9 @@ export default function Layout({ children }: { children: ReactNode }) {
       />
       <button
         onClick={() => window.electron.close()}
-        className="absolute z-30 rounded-full transition-colors"
+        className="absolute z-40 rounded-full transition-colors"
         style={{
-          top: '13.5vh', right: '7vw',
+          top: '13vh', right: '7vw',
           width: 22, height: 22,
           background: 'transparent', border: 'none', cursor: 'pointer',
           WebkitAppRegion: 'no-drag',
