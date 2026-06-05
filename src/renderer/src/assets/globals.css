@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  html, body, #root {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  body {
+    background-color: #080C18;
+    color: #E2E8F0;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Allow text selection in inputs and scrollable areas */
+  input, textarea, [contenteditable] {
+    user-select: text;
+    -webkit-user-select: text;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: rgba(0, 212, 255, 0.25);
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 212, 255, 0.45);
+  }
+}
+
+@layer components {
+  /* Nexus card style */
+  .nexus-card {
+    @apply bg-nexus-card border border-nexus-border rounded-2xl shadow-card;
+    @apply transition-all duration-200;
+  }
+  .nexus-card:hover {
+    @apply border-nexus-border-bright shadow-nexus-sm;
+  }
+
+  /* Glowing primary button */
+  .btn-primary {
+    @apply relative overflow-hidden;
+    @apply bg-nexus-primary text-nexus-bg font-semibold;
+    @apply px-6 py-2.5 rounded-xl;
+    @apply transition-all duration-200;
+    @apply hover:shadow-nexus-glow hover:scale-[1.02] active:scale-[0.98];
+  }
+  .btn-primary::before {
+    content: '';
+    @apply absolute inset-0 bg-white/10 opacity-0 transition-opacity duration-200;
+  }
+  .btn-primary:hover::before {
+    @apply opacity-100;
+  }
+
+  /* Ghost button */
+  .btn-ghost {
+    @apply bg-transparent border border-nexus-border text-nexus-text-secondary;
+    @apply px-4 py-2 rounded-xl font-medium text-sm;
+    @apply transition-all duration-200;
+    @apply hover:border-nexus-primary hover:text-nexus-primary;
+  }
+
+  /* Danger button */
+  .btn-danger {
+    @apply bg-nexus-error/10 border border-nexus-error/30 text-nexus-error;
+    @apply px-4 py-2 rounded-xl font-medium text-sm;
+    @apply transition-all duration-200;
+    @apply hover:bg-nexus-error/20 hover:border-nexus-error/60;
+  }
+
+  /* Input field */
+  .nexus-input {
+    @apply bg-nexus-surface border border-nexus-border rounded-xl;
+    @apply px-4 py-2.5 text-nexus-text-primary text-sm;
+    @apply outline-none transition-all duration-200;
+    @apply placeholder:text-nexus-text-muted;
+    @apply focus:border-nexus-primary focus:shadow-nexus-sm;
+    @apply w-full;
+  }
+
+  /* Status dot */
+  .status-dot {
+    @apply w-2 h-2 rounded-full inline-block;
+  }
+  .status-dot.online  { @apply bg-nexus-success shadow-[0_0_6px_theme(colors.nexus.success)]; }
+  .status-dot.offline { @apply bg-nexus-error/70; }
+
+  /* Decorative scan line */
+  .scan-line {
+    @apply absolute left-0 right-0 h-px;
+    @apply bg-gradient-to-r from-transparent via-nexus-primary/40 to-transparent;
+    @apply pointer-events-none;
+    animation: scan 10s linear infinite;
+  }
+}
+
+@layer utilities {
+  .font-display { font-family: 'Rajdhani', Inter, sans-serif; }
+
+  /* Hex-clip top corners */
+  .clip-hex-top {
+    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+  }
+
+  /* Subtle grid background */
+  .bg-grid {
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+  }
+}

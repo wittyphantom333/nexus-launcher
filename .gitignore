@@ -1,0 +1,30 @@
+# Nexus Launcher
+
+node_modules
+dist
+out
+.DS_Store
+*.local
+*.log
+npm-debug.log*
+
+# Build outputs
+/dist/
+/out/
+
+# Electron specific
+resources/app.asar
+
+# Editor
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS
+Thumbs.db
