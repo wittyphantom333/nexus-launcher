@@ -105,18 +105,21 @@ export default function HomePage() {
       {/* ── Background image slider (fills left content area) ── */}
       <ContentSlider slides={SLIDES} interval={7} />
 
-      {/* ── NEWS panel ─────────────────────────────────────────────────────
-          Positioned over the image's teal-bordered NEWS box.
-          right-[72px] = image's right content margin
-          top-0        = top of content area (main starts at y=168)
-          w-[308px]    = panel width in the image at current scale
-          h-[387px]    = height from top to just above play-button area       */}
+      {/* NEWS panel — no flex wrapper, just a scrollable div at the right position */}
       <div
-        className="absolute flex flex-col overflow-hidden"
-        style={{ right: '4.95vw', top: 0, width: '24.4vw', height: '65vh' }}
+        className="absolute overflow-y-auto overflow-x-hidden"
+        style={{
+          right: '4.5vw',
+          top: 0,
+          width: '23vw',
+          height: '72%',
+          paddingTop: '9.5vh',
+          paddingLeft: '1vw',
+          paddingRight: '0.5vw',
+          paddingBottom: '1vh',
+        }}
       >
-        {/* Scrollable news feed — pt skips the image's drawn NEWS header */}
-        <div className="flex-1 overflow-y-auto px-4 pb-3 space-y-5 custom-scrollbar" style={{ paddingTop: '6vh' }}>
+        <div className="space-y-5">
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
               No news yet — edit <span className="text-[#3a8070]">news.json</span> on GitHub

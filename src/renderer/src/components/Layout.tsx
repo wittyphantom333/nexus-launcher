@@ -40,13 +40,13 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Drag zone — covers the NEXUS logo, fully transparent */}
       <div
         className="absolute inset-x-0 top-0 z-20"
-        style={{ height: '11.23vh', WebkitAppRegion: 'drag' } as React.CSSProperties}
+        style={{ height: '16.5vh', WebkitAppRegion: 'drag' } as React.CSSProperties}
       />
 
       {/* Window controls — over the image's blue/red dots */}
       <div
         className="absolute z-30 flex items-center gap-1.5"
-        style={{ top: '13.38vh', left: '8.5vw', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '18.5vh', left: '8.5vw', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
         <button
           onClick={() => window.electron.minimize()}
@@ -70,7 +70,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <button
         onClick={() => window.electron.close()}
         className="group absolute z-30 w-4 h-4 rounded-full flex items-center justify-center"
-        style={{ top: '13.38vh', right: '3vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '18.5vh', right: '3vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
         title="Close"
       >
         <X className="w-2.5 h-2.5 text-[#e07070] opacity-0 group-hover:opacity-100" />
@@ -79,7 +79,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Nav items — rendered over the empty nav strip */}
       <nav
         className="absolute inset-x-0 z-30 flex items-stretch"
-        style={{ top: '11.23vh', height: '4.69vh', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '16.5vh', height: '5.25vh', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
         {/* left spacer — clears the window control dots */}
         <div style={{ width: '18vw', flexShrink: 0 }} />
@@ -127,7 +127,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Page content — fills the content area */}
       <div
         className="absolute inset-x-0 bottom-0 z-10"
-        style={{ top: '15.92vh' }}
+        style={{ top: '21.75vh' }}
       >
         {children}
       </div>
