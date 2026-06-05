@@ -91,7 +91,7 @@ export default function HomePage() {
   const isPatching  = launchState === 'patching'
   const isLaunching = launchState === 'checking' || launchState === 'launching'
   const isError     = launchState === 'error'
-  const buttonDisabled = isPatching || isLaunching || !activeServer
+  const buttonDisabled = isPatching || isLaunching
 
   const buttonLabel =
     launchState === 'checking'  ? 'CHECKING...'  :
@@ -105,7 +105,8 @@ export default function HomePage() {
       {/* ── Background image slider (fills left content area) ── */}
       <ContentSlider slides={SLIDES} interval={7} />
 
-      {/* NEWS panel — single scrollable div, mask hides content above header zone */}
+      {/* NEWS panel — clip-path wrapper + inner scroll
+          clip-path clips visually without blocking scroll events (unlike overflow:hidden or mask-image) */}
       <div
         style={{
           position: 'absolute',
@@ -113,16 +114,22 @@ export default function HomePage() {
           top: 0,
           width: '28vw',
           bottom: '14vh',
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          paddingTop: '11.5vh',
-          paddingLeft: '2.5vw',
-          paddingRight: '0.5vw',
-          paddingBottom: '1vh',
-          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, transparent 11vh, black 11.5vh)',
-          maskImage: 'linear-gradient(to bottom, transparent 0, transparent 11vh, black 11.5vh)',
+          clipPath: 'inset(11vh 0 0 0)',
+          WebkitClipPath: 'inset(11vh 0 0 0)',
         } as React.CSSProperties}
       >
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            paddingTop: '11.5vh',
+            paddingLeft: '2.5vw',
+            paddingRight: '0.5vw',
+            paddingBottom: '1vh',
+          }}
+        >
         <div className="space-y-5">
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
@@ -156,6 +163,7 @@ export default function HomePage() {
               </p>
             </div>
           ))}
+        </div>
         </div>
       </div>
 
