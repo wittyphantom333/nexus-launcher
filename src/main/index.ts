@@ -39,7 +39,8 @@ function createWindow(): void {
   // Show window once ready to avoid white flash
   mainWindow.once('ready-to-show', () => {
     mainWindow?.show()
-    if (is.dev) mainWindow?.webContents.openDevTools({ mode: 'detach' })
+    // Open DevTools for debugging (remove once issue is resolved)
+    mainWindow?.webContents.openDevTools({ mode: 'detach' })
   })
 
   // Open external links in default browser

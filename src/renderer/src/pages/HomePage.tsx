@@ -36,13 +36,20 @@ export default function HomePage() {
 
   // ── Fetch news via IPC (main-process axios — bypasses renderer file:// origin issues) ──
   useEffect(() => {
+    console.log('[news] fetching from', GITHUB_NEWS_URL)
     window.electron.fetchNews(GITHUB_NEWS_URL)
       .then(res => {
+        console.log('[news] response', res)
         if (res.success && Array.isArray(res.data)) {
+          console.log('[news] setting', res.data.length, 'items')
           setNews(res.data as NewsItem[])
+        } else {
+          console.warn('[news] empty/invalid response', res)
         }
       })
-      .catch(() => {})
+      .catch(err => {
+        console.error('[news] fetch error', err)
+      })
   }, [])
 
   // ── Patcher events ───────────────────────────────────────────────────────
@@ -127,6 +134,7 @@ export default function HomePage() {
           paddingLeft: '2.5vw',
           paddingRight: '0.5vw',
           paddingBottom: '1vh',
+          zIndex: 30,
         }}
       >
         <div className="space-y-5">
