@@ -34,23 +34,15 @@ export default function HomePage() {
     setNews,
   } = useStore()
 
-  // ── Fetch news directly in the renderer ──────
+  // ── Fetch news via IPC (main-process axios — bypasses renderer file:// origin issues) ──
   useEffect(() => {
-    const url = `${GITHUB_NEWS_URL}?_=${Date.now()}`
-    fetch(url)
-      .then(r => {
-        if (!r.ok) throw new Error(`HTTP ${r.status}`)
-        return r.json()
+    window.electron.fetchNews(GITHUB_NEWS_URL)
+      .then(res => {
+        if (res.success && Array.isArray(res.data)) {
+          setNews(res.data as NewsItem[])
+        }
       })
-      .then((data: unknown) => {
-        if (Array.isArray(data)) setNews(data as NewsItem[])
-      })
-      .catch(() => {
-        // Fallback to IPC path if renderer fetch fails
-        window.electron.fetchNews(GITHUB_NEWS_URL)
-          .then(res => { if (res.success && Array.isArray(res.data)) setNews(res.data as NewsItem[]) })
-          .catch(() => {})
-      })
+      .catch(() => {})
   }, [])
 
   // ── Patcher events ───────────────────────────────────────────────────────
