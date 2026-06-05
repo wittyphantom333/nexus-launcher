@@ -152,35 +152,17 @@ export default function SettingsPage() {
               </Field>
             )}
 
-            <Field label="Slideshow Images">
-              <p className="text-[#2a6050] text-[10px] mb-2">Add multiple images to rotate as the launcher background.</p>
-              <div className="space-y-1.5">
-                {(form.backgroundImages ?? []).map((img, i) => (
-                  <div key={i} className="flex items-center gap-2">
-                    <span className="nexus-input flex-1 truncate text-[11px] py-1 text-[#4a8878]">{img}</span>
-                    <button
-                      onClick={() => set('backgroundImages', (form.backgroundImages ?? []).filter((_, j) => j !== i) as SettingsType['backgroundImages'])}
-                      className="text-[#e05050] text-xs hover:opacity-80 px-2 py-1 shrink-0"
-                    >✕</button>
-                  </div>
-                ))}
-              </div>
-              <button
-                onClick={async () => {
-                  const p = await window.electron.browseFile([{ name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp'] }])
-                  if (p) set('backgroundImages', [...(form.backgroundImages ?? []), p] as SettingsType['backgroundImages'])
-                }}
-                className="btn-ghost py-1.5 px-3 text-xs mt-2"
-              >+ Add Image</button>
-            </Field>
-
-            <Field label={`Slideshow Interval: ${form.backgroundInterval ?? 8}s`}>
-              <input
-                type="range" min={3} max={60} step={1}
-                value={form.backgroundInterval ?? 8}
-                onChange={e => set('backgroundInterval', Number(e.target.value))}
-                className="w-full accent-[#00c8b0]"
-              />
+            <Field label="Slideshow">
+              <p className="text-[#2a6050] text-[11px] leading-relaxed">
+                Background slides are managed via{' '}
+                <button
+                  onClick={() => window.electron.openExternal('https://github.com/wittyphantom333/nexus-launcher/blob/main/slides.json')}
+                  className="text-[#40ead0] hover:opacity-80"
+                >
+                  slides.json
+                </button>{' '}
+                on GitHub. Add image URLs there to update backgrounds without a new release.
+              </p>
             </Field>
             <Field label="Accent Color">
               <div className="flex items-center gap-3">

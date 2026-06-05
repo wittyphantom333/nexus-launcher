@@ -92,7 +92,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               onClick={() => navigate(path)}
               className={clsx(
                 'relative flex-1 h-full text-[11px] font-bold tracking-[0.18em] uppercase transition-colors duration-150',
-                active ? 'text-[#40ead0]' : 'text-[#2a5a50] hover:text-[#70c0b0]'
+                active ? 'text-[#40ead0]' : 'text-[#5a9a8a] hover:text-[#70c0b0]'
               )}
               style={{ background: 'transparent', border: 'none', maxWidth: '18vw', cursor: 'pointer' }}
             >
@@ -114,7 +114,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           onClick={() => navigate('/settings')}
           className={clsx(
             'h-full flex items-center justify-center transition-colors',
-            pathname === '/settings' ? 'text-[#40ead0]' : 'text-[#2a5a50] hover:text-[#70c0b0]'
+            pathname === '/settings' ? 'text-[#40ead0]' : 'text-[#5a9a8a] hover:text-[#70c0b0]'
           )}
           style={{ width: '4vw', background: 'transparent', border: 'none', cursor: 'pointer', marginRight: '2vw' }}
         >
@@ -134,3 +134,4 @@ export default function Layout({ children }: { children: ReactNode }) {
     </div>
   )
 }
+

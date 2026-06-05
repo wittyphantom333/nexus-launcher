@@ -105,24 +105,21 @@ export default function HomePage() {
       {/* ── Background image slider (fills left content area) ── */}
       <ContentSlider slides={SLIDES} interval={7} />
 
-      {/* NEWS panel — no flex wrapper, just a scrollable div at the right position */}
+      {/* NEWS panel
+          Outer div clips — content can't scroll above the drawn NEWS header.
+          Inner div is the actual scroll target. */}
       <div
-        className="absolute overflow-y-auto overflow-x-hidden"
-        style={{
-          right: '4.5vw',
-          top: 0,
-          width: '23vw',
-          height: '72%',
-          paddingTop: '9.5vh',
-          paddingLeft: '1vw',
-          paddingRight: '0.5vw',
-          paddingBottom: '1vh',
-        }}
+        className="absolute overflow-hidden"
+        style={{ right: '4.5vw', top: 0, width: '24vw', height: '73%' }}
       >
-        <div className="space-y-5">
+        <div
+          className="absolute overflow-y-auto"
+          style={{ top: '9.5vh', left: 0, right: 0, bottom: 0, paddingLeft: '2vw', paddingRight: '1vw', paddingBottom: '1vh' }}
+        >
+          <div className="space-y-5">
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
-              No news yet — edit <span className="text-[#3a8070]">news.json</span> on GitHub
+              No news yet
             </p>
           )}
           {news.map(item => (
@@ -152,6 +149,7 @@ export default function HomePage() {
               </p>
             </div>
           ))}
+          </div>
         </div>
       </div>
 
