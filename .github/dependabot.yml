@@ -5,18 +5,10 @@ updates:
     schedule:
       interval: "weekly"
     # Only open PRs for minor and patch updates
-    # Major version bumps (e.g. electron 31→42, vite 5→8) require manual review
+    # Major version bumps require manual review and migration
     versioning-strategy: increase
     ignore:
-      - dependency-name: "electron"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "vite"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "electron-vite"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "electron-builder"
-        update-types: ["version-update:semver-major"]
-      - dependency-name: "electron-updater"
+      - dependency-name: "*"
         update-types: ["version-update:semver-major"]
 
   - package-ecosystem: "github-actions"
