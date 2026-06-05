@@ -125,9 +125,9 @@ export default function HomePage() {
       <div
         style={{
           position: 'absolute',
-          right: 0,
+          right: '1vw',
           top: 0,
-          width: '34vw',
+          width: '28vw',
           bottom: '14vh',
           overflowY: 'auto',
           overflowX: 'hidden',
