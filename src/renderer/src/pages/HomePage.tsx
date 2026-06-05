@@ -112,11 +112,11 @@ export default function HomePage() {
           w-[308px]    = panel width in the image at current scale
           h-[387px]    = height from top to just above play-button area       */}
       <div
-        className="absolute right-[6vw] top-0 flex flex-col overflow-hidden"
-        style={{ width: '25.67vw', height: '61.23%' }}
+        className="absolute flex flex-col overflow-hidden"
+        style={{ right: '4.95vw', top: 0, width: '24.4vw', height: '65vh' }}
       >
         {/* Scrollable news feed — pt skips the image's drawn NEWS header */}
-        <div className="flex-1 overflow-y-auto px-4 pb-3 space-y-5 custom-scrollbar" style={{ paddingTop: '6.75vh' }}>
+        <div className="flex-1 overflow-y-auto px-4 pb-3 space-y-5 custom-scrollbar" style={{ paddingTop: '6vh' }}>
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
               No news yet — edit <span className="text-[#3a8070]">news.json</span> on GitHub
@@ -156,7 +156,7 @@ export default function HomePage() {
       {patchProgress && (
         <div
           className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2"
-          style={{ bottom: '24vh', width: '28.33vw' }}
+          style={{ bottom: '20vh', width: '28vw' }}
         >
           <div
             className="flex-1 h-[3px] rounded-full overflow-hidden"
@@ -193,9 +193,9 @@ export default function HomePage() {
           buttonDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:brightness-125 active:scale-95'
         )}
         style={{
-          bottom: '26.75vh',
-          width: '26.67vw',
-          height: '6.75vh',
+          bottom: '12.7vh',
+          width: '16.93vw',
+          height: '5.47vh',
           background: 'transparent',
           border: 'none',
         }}
@@ -215,7 +215,7 @@ export default function HomePage() {
       </button>
 
       {/* ── Server status + errors — bottom-left inside the launcher bar ── */}
-      <div className="absolute flex flex-col gap-0.5" style={{ left: '7.5vw', bottom: '7.25vh' }}>
+      <div className="absolute flex flex-col gap-0.5" style={{ left: '5vw', bottom: '8.5vh' }}>
         {activeServer ? (
           <div className="flex items-center gap-2 text-xs">
             <div className={clsx(

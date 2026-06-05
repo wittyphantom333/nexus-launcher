@@ -56,6 +56,8 @@ declare global {
       minimize: () => void
       maximize: () => void
       close: () => void
+      getBounds: () => Promise<{ x: number; y: number; width: number; height: number }>
+      setBounds: (bounds: { x: number; y: number; width: number; height: number }) => void
       openExternal: (url: string) => void
     }
   }

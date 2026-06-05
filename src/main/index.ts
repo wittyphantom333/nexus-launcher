@@ -104,6 +104,12 @@ ipcMain.on('window:maximize', () => {
   else mainWindow?.maximize()
 })
 ipcMain.on('window:close', () => mainWindow?.close())
+ipcMain.handle('window:get-bounds', () => mainWindow?.getBounds())
+ipcMain.on('window:set-bounds', (_event, bounds: { x: number; y: number; width: number; height: number }) => {
+  if (!mainWindow) return
+  const { x, y, width, height } = bounds
+  mainWindow.setBounds({ x: Math.round(x), y: Math.round(y), width: Math.round(width), height: Math.round(height) })
+})
 
 // IPC: open external
 ipcMain.on('shell:open-external', (_event, url: string) => {

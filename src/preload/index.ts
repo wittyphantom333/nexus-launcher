@@ -85,6 +85,10 @@ const api = {
   minimize: (): void => ipcRenderer.send('window:minimize'),
   maximize: (): void => ipcRenderer.send('window:maximize'),
   close: (): void => ipcRenderer.send('window:close'),
+  getBounds: (): Promise<{ x: number; y: number; width: number; height: number }> =>
+    ipcRenderer.invoke('window:get-bounds'),
+  setBounds: (bounds: { x: number; y: number; width: number; height: number }): void =>
+    ipcRenderer.send('window:set-bounds', bounds),
   openExternal: (url: string): void => ipcRenderer.send('shell:open-external', url)
 } as const
 
