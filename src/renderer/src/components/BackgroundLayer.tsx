@@ -95,26 +95,7 @@ export default function BackgroundLayer() {
         style={{ objectFit: 'fill', zIndex: 5 }}
       />
 
-      {/* Dot nav — only when multiple slides */}
-      {contentSlides.length > 1 && (
-        <div
-          className="absolute flex gap-1.5"
-          style={{ bottom: '12vh', left: '42%', zIndex: 10 }}
-        >
-          {contentSlides.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => { setPrevIdx(activeIdx); setActiveIdx(i) }}
-              style={{
-                width: 6, height: 6, borderRadius: '50%',
-                border: 'none', cursor: 'pointer',
-                background: i === activeIdx ? '#00e8ca' : 'rgba(0,180,160,0.3)',
-                boxShadow: i === activeIdx ? '0 0 6px #00e8ca' : 'none',
-              }}
-            />
-          ))}
-        </div>
-      )}
+
     </div>
   )
 }
