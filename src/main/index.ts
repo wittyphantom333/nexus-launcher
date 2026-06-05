@@ -23,6 +23,7 @@ function createWindow(): void {
     minHeight: 667,
     frame: false,
     transparent: true,
+    hasShadow: false,
     titleBarStyle: 'hidden',
     show: false,
     resizable: true,
