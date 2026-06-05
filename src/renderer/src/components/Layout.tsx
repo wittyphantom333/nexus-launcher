@@ -45,28 +45,23 @@ export default function Layout({ children }: { children: ReactNode }) {
         style={{ height: '11vh', WebkitAppRegion: 'drag' } as React.CSSProperties}
       />
 
-      {/* Window controls — minimize + close on the RIGHT (Windows convention) */}
-      <div
-        className="absolute z-30 flex items-center gap-1.5"
-        style={{ top: '12.5vh', right: '7vw', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+      {/* Window controls — positioned independently to align with drawn dots */}
+      <button
+        onClick={() => window.electron.minimize()}
+        className="group absolute z-30 w-3.5 h-3.5 rounded-full flex items-center justify-center transition-opacity"
+        style={{ top: '13vh', right: '10vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        title="Minimize"
       >
-        <button
-          onClick={() => window.electron.minimize()}
-          className="group w-3.5 h-3.5 rounded-full flex items-center justify-center transition-opacity"
-          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-          title="Minimize"
-        >
-          <Minus className="w-2.5 h-2.5 text-[#80b0d0] opacity-30 group-hover:opacity-100" />
-        </button>
-        <button
-          onClick={() => window.electron.close()}
-          className="group w-3.5 h-3.5 rounded-full flex items-center justify-center transition-opacity"
-          style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
-          title="Close"
-        >
-          <X className="w-2.5 h-2.5 text-[#e07070] opacity-30 group-hover:opacity-100" />
-        </button>
-      </div>
+        <Minus className="w-2.5 h-2.5 text-[#80b0d0] opacity-30 group-hover:opacity-100" />
+      </button>
+      <button
+        onClick={() => window.electron.close()}
+        className="group absolute z-30 w-3.5 h-3.5 rounded-full flex items-center justify-center transition-opacity"
+        style={{ top: '13vh', right: '7vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        title="Close"
+      >
+        <X className="w-2.5 h-2.5 text-[#e07070] opacity-30 group-hover:opacity-100" />
+      </button>
 
       {/* Nav items — rendered over the empty nav strip */}
       <nav
