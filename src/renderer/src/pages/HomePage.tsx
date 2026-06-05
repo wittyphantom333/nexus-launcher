@@ -179,8 +179,10 @@ export default function HomePage() {
         <div
           className="absolute right-0 top-0 bottom-0 w-[272px] flex flex-col overflow-hidden"
           style={{
-            background: 'rgba(4,16,14,0.90)',
-            borderLeft: '1px solid rgba(0,180,160,0.25)',
+            background: 'rgba(3,12,11,0.82)',
+            backdropFilter: 'blur(16px)',
+            borderLeft: '2px solid rgba(0,200,180,0.45)',
+            boxShadow: '-4px 0 24px rgba(0,180,160,0.12), inset 1px 0 0 rgba(0,232,202,0.08)',
             backgroundImage: hexBg,
           }}
         >
@@ -234,7 +236,8 @@ export default function HomePage() {
         className="relative shrink-0 overflow-hidden transition-all duration-200"
         style={{
           height: patchProgress ? 28 : 3,
-          background: 'rgba(3,10,8,0.92)',
+          background: 'rgba(3,10,8,0.80)',
+          backdropFilter: 'blur(8px)',
           borderTop: '1px solid rgba(0,100,90,0.3)',
         }}
       >
@@ -263,7 +266,7 @@ export default function HomePage() {
       {/* â”€â”€ Action button footer â”€â”€ */}
       <div
         className="flex items-center justify-center h-14 shrink-0"
-        style={{ background: 'rgba(3,8,6,0.96)', borderTop: '1px solid rgba(0,80,70,0.4)' }}
+        style={{ background: 'rgba(3,8,6,0.85)', backdropFilter: 'blur(12px)', borderTop: '1px solid rgba(0,180,160,0.35)' }}
       >
         {!settings.gamePath ? (
           <p className="text-[#c8901a] text-xs tracking-wide">
