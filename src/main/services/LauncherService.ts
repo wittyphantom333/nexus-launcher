@@ -51,9 +51,9 @@ export class LauncherService {
       return { success: false, error: validation.error ?? 'Game path not valid' }
     }
 
-    const connectorExe = join(this.getConnectorDir(), 'NexusForever.Launcher.exe')
+    const connectorExe = join(this.getConnectorDir(), 'NexusForever.ClientConnector.exe')
     if (!existsSync(connectorExe)) {
-      return { success: false, error: 'NexusForever.Launcher.exe not found in app resources' }
+      return { success: false, error: 'NexusForever.ClientConnector.exe not found in app resources' }
     }
 
     const args = this.buildArgs(opts)

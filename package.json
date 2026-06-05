@@ -85,7 +85,7 @@
       {
         "from": "src/connector/",
         "to": "connector/",
-        "filter": ["*.exe", "*.json"]
+        "filter": ["*.exe", "*.dll", "*.json"]
       }
     ],
     "win": {
