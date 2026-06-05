@@ -68,14 +68,13 @@ export class LauncherService {
     }
 
     const connectorExe = join(client64Dir, 'NexusForever.ClientConnector.exe')
-    const args = this.buildArgs(opts)
 
     return new Promise(resolve => {
       try {
-        const child = spawn(connectorExe, args, {
+        const child = spawn(connectorExe, [], {
           detached: true,
           stdio: 'ignore',
-          cwd: opts.gamePath
+          cwd: client64Dir
         })
         child.unref()
         resolve({ success: true })
@@ -141,22 +140,5 @@ export class LauncherService {
     }
 
     return null
-  }
-
-  private buildArgs(opts: LaunchOptions): string[] {
-    const args: string[] = []
-
-    // NexusForever uses -AuthServer flag
-    args.push(`-AuthServer`, `${opts.host}:${opts.port}`)
-
-    // Language
-    const langMap: Record<string, string> = {
-      English: 'en',
-      French: 'fr',
-      German: 'de'
-    }
-    args.push(`-Language`, langMap[opts.language] ?? 'en')
-
-    return args
   }
 }
