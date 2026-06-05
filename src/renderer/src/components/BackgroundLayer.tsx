@@ -4,14 +4,15 @@ import { useStore } from '../store'
 export default function BackgroundLayer() {
   const { backgroundType, backgroundPath } = useStore(s => s.settings)
 
+  // User-set custom background
   if (backgroundType === 'image' && backgroundPath) {
     return (
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(${CSS.escape(backgroundPath)})` }}
-      >
-        <div className="absolute inset-0 bg-nexus-bg/75 backdrop-blur-sm" />
-      </div>
+      <img
+        src={backgroundPath}
+        alt=""
+        className="absolute inset-0 w-full h-full pointer-events-none select-none"
+        style={{ objectFit: 'cover', objectPosition: 'top center' }}
+      />
     )
   }
 
@@ -24,18 +25,21 @@ export default function BackgroundLayer() {
           loop
           muted
           playsInline
-          className="absolute inset-0 w-full h-full object-cover"
+          className="absolute inset-0 w-full h-full"
+          style={{ objectFit: 'cover', objectPosition: 'top center' }}
         />
-        <div className="absolute inset-0 bg-nexus-bg/70 backdrop-blur-sm" />
       </div>
     )
   }
 
-  // Default: use the bundled launcher background image
+  // Default: the bundled WildStar-style launcher art — fills the window exactly
   return (
-    <div
-      className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"
-      style={{ backgroundImage: `url(${launcherBg})` }}
+    <img
+      src={launcherBg}
+      alt=""
+      className="absolute inset-0 w-full h-full pointer-events-none select-none"
+      style={{ objectFit: 'fill' }}
     />
   )
 }
+

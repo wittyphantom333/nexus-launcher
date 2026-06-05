@@ -18,9 +18,9 @@ export const serverStatusService = new ServerStatusService()
 function createWindow(): void {
   mainWindow = new BrowserWindow({
     width: 1200,
-    height: 720,
+    height: 800,
     minWidth: 1000,
-    minHeight: 620,
+    minHeight: 667,
     frame: false,
     transparent: false,
     backgroundColor: '#080C18',
