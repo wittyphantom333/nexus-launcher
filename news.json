@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "title": "Welcome to Nexus Launcher",
+    "summary": "The Nexus Launcher is now available! Add your NexusForever server in the Community tab, configure your game path in Settings, and click PLAY to get started.",
+    "date": "2026-06-05T00:00:00Z",
+    "isPinned": true
+  },
+  {
+    "id": "2",
+    "title": "NexusForever Emulator",
+    "summary": "NexusForever is an open-source server emulator for WildStar. Visit the GitHub repository to learn how to set up your own server.",
+    "url": "https://github.com/NexusForever/NexusForever",
+    "date": "2026-06-01T00:00:00Z"
+  },
+  {
+    "id": "3",
+    "title": "Getting Started",
+    "summary": "1. Add your server in the Community tab.\n2. Set your WildStar game path in Settings.\n3. Click PLAY — the launcher will connect you automatically.",
+    "date": "2026-05-28T00:00:00Z"
+  }
+]
