@@ -59,8 +59,8 @@ export default function SettingsPage() {
     /* Outer container fills the content area below the nav.
        Dark semi-transparent bg over the launcher image. */
     <div
-      className="h-full flex flex-col"
-      style={{ background: 'rgba(4,10,9,0.88)' }}
+      className="flex flex-col"
+      style={{ background: 'rgba(4,10,9,0.88)', height: 'calc(100% - 15vh)' }}
     >
       {/* Tab strip */}
       <div

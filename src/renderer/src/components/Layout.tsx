@@ -79,7 +79,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Nav items — rendered over the empty nav strip */}
       <nav
         className="absolute inset-x-0 z-30 flex items-stretch"
-        style={{ top: '11.5vh', height: '5vh', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '13.5vh', height: '5vh', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
         {/* left spacer — clears the window control dots */}
         <div style={{ width: '18vw', flexShrink: 0 }} />
@@ -126,8 +126,8 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       {/* Page content — fills the content area */}
       <div
-        className="absolute inset-x-0 z-10 overflow-hidden"
-        style={{ top: '17.5vh', bottom: '15vh' }}
+        className="absolute inset-x-0 bottom-0 z-10"
+        style={{ top: '18.5vh' }}
       >
         {children}
       </div>
