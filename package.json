@@ -39,7 +39,7 @@
     "lucide-react": "^0.400.0",
     "clsx": "^2.1.1",
     "framer-motion": "^11.3.2",
-    "date-fns": "^3.6.0",
+    "date-fns": "^4.4.0",
     "uuid": "^10.0.0"
   },
   "devDependencies": {
