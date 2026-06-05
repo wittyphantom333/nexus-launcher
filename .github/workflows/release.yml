@@ -64,7 +64,6 @@ jobs:
         with:
           name: unsigned-windows-installer
           path: dist/*.exe
-
       - name: Sign installer via SignPath
         uses: signpath/github-action-submit-signing-request@v2
         with:

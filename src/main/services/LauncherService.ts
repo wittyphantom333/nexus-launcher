@@ -51,22 +51,23 @@ export class LauncherService {
       return { success: false, error: validation.error ?? 'Game path not valid' }
     }
 
-    // Copy connector files into the game directory
+    // Copy connector files into the Client64 subfolder of the game directory
     const connectorSrc = this.getConnectorDir()
     if (!existsSync(connectorSrc)) {
       return { success: false, error: 'Connector resources not found in app' }
     }
+    const client64Dir = join(opts.gamePath, 'Client64')
     try {
-      mkdirSync(opts.gamePath, { recursive: true })
+      mkdirSync(client64Dir, { recursive: true })
       for (const file of readdirSync(connectorSrc)) {
-        copyFileSync(join(connectorSrc, file), join(opts.gamePath, file))
+        copyFileSync(join(connectorSrc, file), join(client64Dir, file))
       }
     } catch (err: unknown) {
       const message = err instanceof Error ? err.message : 'Failed to copy connector files'
       return { success: false, error: message }
     }
 
-    const connectorExe = join(opts.gamePath, 'NexusForever.ClientConnector.exe')
+    const connectorExe = join(client64Dir, 'NexusForever.ClientConnector.exe')
     const args = this.buildArgs(opts)
 
     return new Promise(resolve => {
