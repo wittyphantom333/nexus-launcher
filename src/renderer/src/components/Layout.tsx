@@ -1,7 +1,7 @@
 ﻿import { ReactNode } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { clsx } from 'clsx'
-import { Minus, X, Settings } from 'lucide-react'
+import { Minus, X } from 'lucide-react'
 import BackgroundLayer from './BackgroundLayer'
 import UpdateBanner from './UpdateBanner'
 import ResizeHandles from './ResizeHandles'
@@ -21,6 +21,7 @@ const NAV_ITEMS = [
   { path: '/', label: 'THE GAME' },
   { path: '/servers', label: 'COMMUNITY' },
   { path: '/patch-notes', label: 'PATCH NOTES' },
+  { path: '/settings', label: 'OPTIONS' },
 ]
 
 export default function Layout({ children }: { children: ReactNode }) {
@@ -44,10 +45,10 @@ export default function Layout({ children }: { children: ReactNode }) {
         style={{ height: '11vh', WebkitAppRegion: 'drag' } as React.CSSProperties}
       />
 
-      {/* Window controls — over the image's blue/red dots */}
+      {/* Window controls — minimize + close on the RIGHT (Windows convention) */}
       <div
         className="absolute z-30 flex items-center gap-1.5"
-        style={{ top: '12.5vh', left: '8.5vw', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '12.5vh', right: '4vw', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
         <button
           onClick={() => window.electron.minimize()}
@@ -66,16 +67,6 @@ export default function Layout({ children }: { children: ReactNode }) {
           <X className="w-2.5 h-2.5 text-[#e07070] opacity-30 group-hover:opacity-100" />
         </button>
       </div>
-
-      {/* Right close dot */}
-      <button
-        onClick={() => window.electron.close()}
-        className="group absolute z-30 w-4 h-4 rounded-full flex items-center justify-center"
-        style={{ top: '12.5vh', right: '3vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
-        title="Close"
-      >
-        <X className="w-2.5 h-2.5 text-[#e07070] opacity-30 group-hover:opacity-100" />
-      </button>
 
       {/* Nav items — rendered over the empty nav strip */}
       <nav
@@ -109,18 +100,6 @@ export default function Layout({ children }: { children: ReactNode }) {
         })}
 
         <div style={{ flex: 1 }} />
-
-        {/* Settings gear */}
-        <button
-          onClick={() => navigate('/settings')}
-          className={clsx(
-            'h-full flex items-center justify-center transition-colors',
-            pathname === '/settings' ? 'text-[#40ead0]' : 'text-[#5a9a8a] hover:text-[#70c0b0]'
-          )}
-          style={{ width: '4vw', background: 'transparent', border: 'none', cursor: 'pointer', marginRight: '2vw', opacity: 0.5 }}
-        >
-          <Settings className="w-3.5 h-3.5" />
-        </button>
       </nav>
 
       <UpdateBanner />
