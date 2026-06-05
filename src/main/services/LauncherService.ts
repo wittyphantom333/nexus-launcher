@@ -2,6 +2,7 @@ import { spawn } from 'child_process'
 import { existsSync } from 'fs'
 import { join } from 'path'
 import { platform } from 'os'
+import { app } from 'electron'
 
 export interface LaunchOptions {
   gamePath: string
@@ -38,17 +39,29 @@ const COMMON_PATHS_WIN = [
 ]
 
 export class LauncherService {
+  private getConnectorDir(): string {
+    return app.isPackaged
+      ? join(process.resourcesPath, 'connector')
+      : join(app.getAppPath(), 'src', 'connector')
+  }
+
   async launch(opts: LaunchOptions): Promise<LaunchResult> {
     const validation = await this.validatePath(opts.gamePath)
-    if (!validation.valid || !validation.executable) {
-      return { success: false, error: validation.error ?? 'Game executable not found' }
+    if (!validation.valid) {
+      return { success: false, error: validation.error ?? 'Game path not valid' }
+    }
+
+    const connectorExe = join(this.getConnectorDir(), 'NexusForever.Launcher.exe')
+    if (!existsSync(connectorExe)) {
+      return { success: false, error: 'NexusForever.Launcher.exe not found in app resources' }
     }
 
     const args = this.buildArgs(opts)
 
     return new Promise(resolve => {
       try {
-        const child = spawn(validation.executable!, args, {
+        // Run the connector from the game directory so it can locate and patch game files
+        const child = spawn(connectorExe, args, {
           detached: true,
           stdio: 'ignore',
           cwd: opts.gamePath
@@ -56,7 +69,7 @@ export class LauncherService {
         child.unref()
         resolve({ success: true })
       } catch (err: unknown) {
-        const message = err instanceof Error ? err.message : 'Failed to launch game'
+        const message = err instanceof Error ? err.message : 'Failed to launch'
         resolve({ success: false, error: message })
       }
     })
