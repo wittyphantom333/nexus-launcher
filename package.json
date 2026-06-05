@@ -95,7 +95,7 @@
         }
       ],
       "icon": "build/icon.ico",
-      "signingHashAlgorithms": ["sha256"]
+      "sign": false
     },
     "mac": {
       "target": [
