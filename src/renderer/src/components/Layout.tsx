@@ -38,10 +38,10 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       {/* Layer 1: functional overlays */}
 
-      {/* Drag zone — covers the NEXUS logo, fully transparent */}
+      {/* Drag zone — covers the NEXUS logo only, stops above control dots */}
       <div
         className="absolute inset-x-0 top-0 z-20"
-        style={{ height: '16.5vh', WebkitAppRegion: 'drag' } as React.CSSProperties}
+        style={{ height: '11vh', WebkitAppRegion: 'drag' } as React.CSSProperties}
       />
 
       {/* Window controls — over the image's blue/red dots */}
@@ -55,7 +55,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
           title="Minimize"
         >
-          <Minus className="w-2.5 h-2.5 text-[#80b0d0] opacity-0 group-hover:opacity-100" />
+          <Minus className="w-2.5 h-2.5 text-[#80b0d0] opacity-30 group-hover:opacity-100" />
         </button>
         <button
           onClick={() => window.electron.close()}
@@ -63,7 +63,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           style={{ background: 'transparent', border: 'none', cursor: 'pointer' }}
           title="Close"
         >
-          <X className="w-2.5 h-2.5 text-[#e07070] opacity-0 group-hover:opacity-100" />
+          <X className="w-2.5 h-2.5 text-[#e07070] opacity-30 group-hover:opacity-100" />
         </button>
       </div>
 
@@ -74,7 +74,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         style={{ top: '12.5vh', right: '3vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
         title="Close"
       >
-        <X className="w-2.5 h-2.5 text-[#e07070] opacity-0 group-hover:opacity-100" />
+        <X className="w-2.5 h-2.5 text-[#e07070] opacity-30 group-hover:opacity-100" />
       </button>
 
       {/* Nav items — rendered over the empty nav strip */}
@@ -117,7 +117,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             'h-full flex items-center justify-center transition-colors',
             pathname === '/settings' ? 'text-[#40ead0]' : 'text-[#5a9a8a] hover:text-[#70c0b0]'
           )}
-          style={{ width: '4vw', background: 'transparent', border: 'none', cursor: 'pointer', marginRight: '2vw' }}
+          style={{ width: '4vw', background: 'transparent', border: 'none', cursor: 'pointer', marginRight: '2vw', opacity: 0.5 }}
         >
           <Settings className="w-3.5 h-3.5" />
         </button>
