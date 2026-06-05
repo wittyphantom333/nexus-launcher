@@ -48,7 +48,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Window controls — minimize + close on the RIGHT (Windows convention) */}
       <div
         className="absolute z-30 flex items-center gap-1.5"
-        style={{ top: '12.5vh', right: '4vw', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '12.5vh', right: '7vw', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
         <button
           onClick={() => window.electron.minimize()}
