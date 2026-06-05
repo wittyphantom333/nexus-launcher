@@ -10,17 +10,21 @@ const CURSORS: Record<Dir, string> = {
   s: 's-resize', sw: 'sw-resize', w: 'w-resize', nw: 'nw-resize',
 }
 
-const E = 8 // edge thickness px
+const E = 6 // edge thickness px
+
+// Inset from window edge — launcher.png has decorative chrome that extends
+// beyond the visible filled pixels; handles need to be on the visible edge.
+const INSET = 32
 
 const HANDLES: { dir: Dir; style: React.CSSProperties }[] = [
-  { dir: 'n',  style: { top: 0, left: E * 2, right: E * 2, height: E } },
-  { dir: 's',  style: { bottom: 0, left: E * 2, right: E * 2, height: E } },
-  { dir: 'e',  style: { top: E * 2, bottom: E * 2, right: 0, width: E } },
-  { dir: 'w',  style: { top: E * 2, bottom: E * 2, left: 0, width: E } },
-  { dir: 'nw', style: { top: 0, left: 0, width: E * 3, height: E * 3 } },
-  { dir: 'ne', style: { top: 0, right: 0, width: E * 3, height: E * 3 } },
-  { dir: 'sw', style: { bottom: 0, left: 0, width: E * 3, height: E * 3 } },
-  { dir: 'se', style: { bottom: 0, right: 0, width: E * 3, height: E * 3 } },
+  { dir: 'n',  style: { top: INSET, left: INSET + E * 2, right: INSET + E * 2, height: E } },
+  { dir: 's',  style: { bottom: INSET, left: INSET + E * 2, right: INSET + E * 2, height: E } },
+  { dir: 'e',  style: { top: INSET + E * 2, bottom: INSET + E * 2, right: INSET, width: E } },
+  { dir: 'w',  style: { top: INSET + E * 2, bottom: INSET + E * 2, left: INSET, width: E } },
+  { dir: 'nw', style: { top: INSET, left: INSET, width: E * 3, height: E * 3 } },
+  { dir: 'ne', style: { top: INSET, right: INSET, width: E * 3, height: E * 3 } },
+  { dir: 'sw', style: { bottom: INSET, left: INSET, width: E * 3, height: E * 3 } },
+  { dir: 'se', style: { bottom: INSET, right: INSET, width: E * 3, height: E * 3 } },
 ]
 
 export default function ResizeHandles() {

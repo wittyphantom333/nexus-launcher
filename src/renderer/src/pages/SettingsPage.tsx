@@ -56,11 +56,10 @@ export default function SettingsPage() {
   }
 
   return (
-    /* Outer container fills the content area below the nav.
-       Dark semi-transparent bg over the launcher image. */
+    /* Opaque dark fill that stops above the bottom chrome */
     <div
       className="flex flex-col"
-      style={{ background: 'rgba(4,10,9,0.88)', height: 'calc(100% - 15vh)' }}
+      style={{ background: '#0a1614', height: 'calc(100% - 15vh)' }}
     >
       {/* Tab strip */}
       <div
