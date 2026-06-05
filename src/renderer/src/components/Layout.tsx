@@ -5,6 +5,7 @@ import { Minus, X, Settings } from 'lucide-react'
 import BackgroundLayer from './BackgroundLayer'
 import UpdateBanner from './UpdateBanner'
 import ResizeHandles from './ResizeHandles'
+import launcherBg from '../assets/launcher-bg.png'
 
 /*
  * Pixel map — new launcher.png (1536x1024) scaled to 1200x800 window:
@@ -124,13 +125,23 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       <UpdateBanner />
 
-      {/* Page content — fills the content area */}
+      {/* Page content — fills the content area, z:10 */}
       <div
         className="absolute inset-x-0 bottom-0 z-10"
         style={{ top: '18.5vh' }}
       >
         {children}
       </div>
+
+      {/* Frame PNG — z:20, above content. Transparent interior reveals content;
+          opaque chrome naturally covers anything that drifts outside the window */}
+      <img
+        src={launcherBg}
+        alt=""
+        draggable={false}
+        className="absolute inset-0 w-full h-full select-none pointer-events-none"
+        style={{ objectFit: 'fill', zIndex: 20 }}
+      />
     </div>
   )
 }

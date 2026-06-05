@@ -58,8 +58,16 @@ export default function HomePage() {
 
   // ── Launch flow ──────────────────────────────────────────────────────────
   const handleLaunch = useCallback(async () => {
-    if (!activeServer) return setLaunchState('error', 'No server selected')
-    if (!settings.gamePath) return setLaunchState('error', 'Game path not set in Settings')
+    if (!activeServer) {
+      setLaunchState('error', 'No server selected')
+      setTimeout(() => setLaunchState('idle'), 3000)
+      return
+    }
+    if (!settings.gamePath) {
+      setLaunchState('error', 'Game path not set in Settings')
+      setTimeout(() => setLaunchState('idle'), 3000)
+      return
+    }
 
     setLaunchState('checking')
     const validation = await window.electron.validateGamePath(settings.gamePath)
@@ -105,8 +113,8 @@ export default function HomePage() {
       {/* ── Background image slider (fills left content area) ── */}
       <ContentSlider slides={SLIDES} interval={7} />
 
-      {/* NEWS panel — clip-path wrapper + inner scroll
-          clip-path clips visually without blocking scroll events (unlike overflow:hidden or mask-image) */}
+      {/* NEWS panel — simple overflow-y:auto; frame PNG at z:20 naturally
+          covers any items that scroll up into the drawn header zone */}
       <div
         style={{
           position: 'absolute',
@@ -114,22 +122,14 @@ export default function HomePage() {
           top: 0,
           width: '28vw',
           bottom: '14vh',
-          clipPath: 'inset(11vh 0 0 0)',
-          WebkitClipPath: 'inset(11vh 0 0 0)',
-        } as React.CSSProperties}
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          paddingTop: '11.5vh',
+          paddingLeft: '2.5vw',
+          paddingRight: '0.5vw',
+          paddingBottom: '1vh',
+        }}
       >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            paddingTop: '11.5vh',
-            paddingLeft: '2.5vw',
-            paddingRight: '0.5vw',
-            paddingBottom: '1vh',
-          }}
-        >
         <div className="space-y-5">
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
@@ -163,7 +163,6 @@ export default function HomePage() {
               </p>
             </div>
           ))}
-        </div>
         </div>
       </div>
 

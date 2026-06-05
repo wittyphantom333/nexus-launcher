@@ -86,15 +86,7 @@ export default function BackgroundLayer() {
         )}
       </div>
 
-      {/* Frame PNG — always on top, z:5 above content images */}
-      <img
-        src={launcherBg}
-        alt=""
-        draggable={false}
-        className="absolute inset-0 w-full h-full select-none pointer-events-none"
-        style={{ objectFit: 'fill', zIndex: 5 }}
-      />
-
+      {/* (Frame PNG rendered in Layout at z:20 — above content, below nav) */}
 
     </div>
   )
