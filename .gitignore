@@ -12,6 +12,10 @@ npm-debug.log*
 /dist/
 /out/
 
+# Code signing cert (never commit this)
+build/*.pfx
+build/*.p12
+
 # Electron specific
 resources/app.asar
 

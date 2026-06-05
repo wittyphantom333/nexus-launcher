@@ -48,7 +48,9 @@ jobs:
       - name: Build & package
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # macOS code-signing (optional – set these secrets in repo settings)
+          # Code signing — Windows (CSC_LINK/CSC_KEY_PASSWORD) and macOS (APPLE_*)
+          # Run scripts/generate-cert.ps1 locally to generate CSC_LINK + CSC_KEY_PASSWORD
+          # then add them in: Settings → Secrets and variables → Actions
           CSC_LINK: ${{ secrets.CSC_LINK }}
           CSC_KEY_PASSWORD: ${{ secrets.CSC_KEY_PASSWORD }}
           APPLE_ID: ${{ secrets.APPLE_ID }}
