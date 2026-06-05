@@ -1,5 +1,5 @@
 import { spawn } from 'child_process'
-import { existsSync } from 'fs'
+import { existsSync, readdirSync, copyFileSync, mkdirSync } from 'fs'
 import { join } from 'path'
 import { platform } from 'os'
 import { app } from 'electron'
@@ -51,16 +51,26 @@ export class LauncherService {
       return { success: false, error: validation.error ?? 'Game path not valid' }
     }
 
-    const connectorExe = join(this.getConnectorDir(), 'NexusForever.ClientConnector.exe')
-    if (!existsSync(connectorExe)) {
-      return { success: false, error: 'NexusForever.ClientConnector.exe not found in app resources' }
+    // Copy connector files into the game directory
+    const connectorSrc = this.getConnectorDir()
+    if (!existsSync(connectorSrc)) {
+      return { success: false, error: 'Connector resources not found in app' }
+    }
+    try {
+      mkdirSync(opts.gamePath, { recursive: true })
+      for (const file of readdirSync(connectorSrc)) {
+        copyFileSync(join(connectorSrc, file), join(opts.gamePath, file))
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'Failed to copy connector files'
+      return { success: false, error: message }
     }
 
+    const connectorExe = join(opts.gamePath, 'NexusForever.ClientConnector.exe')
     const args = this.buildArgs(opts)
 
     return new Promise(resolve => {
       try {
-        // Run the connector from the game directory so it can locate and patch game files
         const child = spawn(connectorExe, args, {
           detached: true,
           stdio: 'ignore',
