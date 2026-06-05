@@ -1,5 +1,3 @@
-require('@electron-toolkit/eslint-config-ts/eslint.config.mjs')
-
 module.exports = {
   extends: [
     '@electron-toolkit/eslint-config-ts',
