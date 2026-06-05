@@ -1,6 +1,6 @@
 {
   "name": "nexus-launcher",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Modern launcher for NexusForever – the WildStar private server emulator",
   "main": "./out/main/index.js",
   "homepage": "https://github.com/wittyphantom333/nexus-launcher",
@@ -80,27 +80,39 @@
       {
         "from": "resources/",
         "to": "resources/",
-        "filter": ["**/*"]
+        "filter": [
+          "**/*"
+        ]
       },
       {
         "from": "src/connector/",
         "to": "connector/",
-        "filter": ["*.exe", "*.dll", "*.json"]
+        "filter": [
+          "*.exe",
+          "*.dll",
+          "*.json"
+        ]
       }
     ],
     "win": {
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "portable",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         },
         {
           "target": "zip",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "build/icon.ico",
@@ -111,14 +123,20 @@
       "target": [
         {
           "target": "dmg",
-          "arch": ["x64", "arm64"]
+          "arch": [
+            "x64",
+            "arm64"
+          ]
         }
       ],
       "icon": "build/icon.icns",
       "category": "public.app-category.games"
     },
     "linux": {
-      "target": ["AppImage", "deb"],
+      "target": [
+        "AppImage",
+        "deb"
+      ],
       "icon": "build/icon.png",
       "category": "Game"
     },
