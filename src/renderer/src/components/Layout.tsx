@@ -48,19 +48,19 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Window controls — positioned independently to align with drawn dots */}
       <button
         onClick={() => window.electron.minimize()}
-        className="group absolute z-30 w-3.5 h-3.5 rounded-full flex items-center justify-center transition-opacity"
+        className="group absolute z-30 w-6 h-6 rounded-full flex items-center justify-center transition-opacity"
         style={{ top: '13vh', right: '9vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
         title="Minimize"
       >
-        <Minus className="w-2.5 h-2.5 text-[#80b0d0] opacity-30 group-hover:opacity-100" />
+        <Minus className="w-4 h-4 text-[#80b0d0] opacity-60 group-hover:opacity-100" />
       </button>
       <button
         onClick={() => window.electron.close()}
-        className="group absolute z-30 w-3.5 h-3.5 rounded-full flex items-center justify-center transition-opacity"
+        className="group absolute z-30 w-6 h-6 rounded-full flex items-center justify-center transition-opacity"
         style={{ top: '13.5vh', right: '7vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
         title="Close"
       >
-        <X className="w-2.5 h-2.5 text-[#e07070] opacity-30 group-hover:opacity-100" />
+        <X className="w-4 h-4 text-[#e07070] opacity-60 group-hover:opacity-100" />
       </button>
 
       {/* Nav items — rendered over the empty nav strip */}
