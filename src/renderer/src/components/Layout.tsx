@@ -63,7 +63,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         onClick={() => window.electron.close()}
         className="absolute z-40 rounded-full transition-colors"
         style={{
-          top: '13vh', right: '7vw',
+          top: '13vh', right: '6vw',
           width: 22, height: 22,
           background: 'transparent', border: 'none', cursor: 'pointer',
           WebkitAppRegion: 'no-drag',
