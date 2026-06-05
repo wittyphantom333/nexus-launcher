@@ -119,24 +119,33 @@ export default function HomePage() {
       {/* ── Background image slider (fills left content area) ── */}
       <ContentSlider slides={SLIDES} interval={7} />
 
-      {/* NEWS panel — simple overflow-y:auto; frame PNG at z:20 naturally
-          covers any items that scroll up into the drawn header zone */}
+      {/* NEWS panel — outer clip prevents items showing above drawn header.
+          pointer-events: none on outer + auto on inner = wheel events reach scroll target. */}
       <div
         style={{
           position: 'absolute',
           right: '1vw',
-          top: 0,
+          top: '11vh',
           width: '28vw',
           bottom: '14vh',
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          paddingTop: '11.5vh',
-          paddingLeft: '2.5vw',
-          paddingRight: '0.5vw',
-          paddingBottom: '1vh',
+          overflow: 'hidden',
+          pointerEvents: 'none',
         }}
       >
-        <div className="space-y-5">
+        <div
+          style={{
+            position: 'absolute',
+            inset: 0,
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            paddingLeft: '2.5vw',
+            paddingRight: '0.5vw',
+            paddingBottom: '1vh',
+            paddingTop: '0.5vh',
+            pointerEvents: 'auto',
+          }}
+        >
+          <div className="space-y-5">
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
               No news yet
@@ -169,6 +178,7 @@ export default function HomePage() {
               </p>
             </div>
           ))}
+          </div>
         </div>
       </div>
 
