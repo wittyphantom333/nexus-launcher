@@ -1,11 +1,20 @@
 ﻿import { ReactNode } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { clsx } from 'clsx'
-import { Settings, Minus, X } from 'lucide-react'
+import { Minus, X, Settings } from 'lucide-react'
 import BackgroundLayer from './BackgroundLayer'
 import UpdateBanner from './UpdateBanner'
 
-// Labels match what is drawn in the launcher background image
+/*
+ * Pixel map for 1200x800 window (image fills exactly via object-fit:fill):
+ *   y 0   - 134  : logo / title drag region
+ *   y 134 - 168  : nav bar strip
+ *   y 168 - 800  : content area (pages render here)
+ *
+ * Nav items in the image span roughly x 220-960.
+ * Window controls: left dots ~x 185, y 152 | gear ~x 977, y 152
+ */
+
 const NAV_ITEMS = [
   { path: '/', label: 'THE GAME' },
   { path: '/servers', label: 'COMMUNITY' },
@@ -17,101 +26,100 @@ export default function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
 
   return (
-    <div className="h-screen w-screen overflow-hidden relative" style={{ background: '#06090a' }}>
+    <div className="h-screen w-screen overflow-hidden relative" style={{ background: '#060b0a' }}>
 
-      {/* Layer 0: full-window background image */}
+      {/* The full-window launcher image */}
       <BackgroundLayer />
 
-      {/* Layer 1: functional overlays - transparent by default */}
-      <div className="absolute inset-0 z-10 flex flex-col">
+      {/* ── Functional overlays – all transparent unless noted ── */}
 
-        {/*
-         * Title drag zone (134px) - covers the WILDSTAR logo strip drawn in the image.
-         * Completely transparent so the image logo shows through. This is the drag handle.
-         */}
-        <div
-          className="shrink-0"
-          style={{ height: 134, WebkitAppRegion: 'drag' } as React.CSSProperties}
-        />
+      {/* Drag region: covers the WILDSTAR logo strip */}
+      <div
+        className="absolute inset-x-0 top-0 z-20"
+        style={{ height: 134, WebkitAppRegion: 'drag' } as React.CSSProperties}
+      />
 
-        {/*
-         * Nav bar (34px) - overlaid on the image's teal nav strip.
-         * Semi-opaque dark bg to mask the image's static text so only ours shows.
-         */}
-        <nav
-          className="shrink-0 relative flex items-center"
-          style={{
-            height: 34,
-            background: 'rgba(3,10,9,0.75)',
-            WebkitAppRegion: 'no-drag',
-          } as React.CSSProperties}
+      {/* Window controls – absolutely over the image's control dots */}
+      <div
+        className="absolute z-30 flex items-center gap-1.5"
+        style={{ top: 143, left: 185, WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+      >
+        <button
+          onClick={() => window.electron.minimize()}
+          className="group w-[14px] h-[14px] rounded-full flex items-center justify-center"
+          style={{ background: 'rgba(40,85,130,0)', border: 'none' }}
+          title="Minimize"
         >
-          {/* Window controls - left side, over the image's blue/red dots */}
-          <div className="flex items-center gap-1.5 pl-[74px]">
-            <button
-              onClick={() => window.electron.minimize()}
-              className="group w-3.5 h-3.5 rounded-full transition-all"
-              style={{ background: 'rgba(42,90,138,0.9)', border: '1px solid rgba(74,128,170,0.7)' }}
-              title="Minimize"
-            >
-              <Minus className="w-2 h-2 text-[#80b0d0] opacity-0 group-hover:opacity-100 mx-auto" />
-            </button>
-            <button
-              onClick={() => window.electron.close()}
-              className="group w-3.5 h-3.5 rounded-full transition-all"
-              style={{ background: 'rgba(130,22,22,0.9)', border: '1px solid rgba(170,48,48,0.7)' }}
-              title="Close"
-            >
-              <X className="w-2 h-2 text-[#e0a0a0] opacity-0 group-hover:opacity-100 mx-auto" />
-            </button>
-          </div>
+          <Minus className="w-2.5 h-2.5 text-[#70a0c0] opacity-0 group-hover:opacity-100 transition-opacity" />
+        </button>
+        <button
+          onClick={() => window.electron.close()}
+          className="group w-[14px] h-[14px] rounded-full flex items-center justify-center"
+          style={{ background: 'rgba(120,20,20,0)', border: 'none' }}
+          title="Close"
+        >
+          <X className="w-2.5 h-2.5 text-[#e07070] opacity-0 group-hover:opacity-100 transition-opacity" />
+        </button>
+      </div>
 
-          {/* Nav items - centered across the nav strip */}
-          <div className="flex-1 flex items-stretch justify-center h-full">
-            {NAV_ITEMS.map(({ path, label }) => {
-              const active = pathname === path
-              return (
-                <button
-                  key={path}
-                  onClick={() => navigate(path)}
-                  className={clsx(
-                    'relative px-8 text-[11px] font-bold tracking-[0.2em] uppercase h-full transition-all duration-150',
-                    active ? 'text-[#40ead0]' : 'text-[#3a6070] hover:text-[#80c0b8]'
-                  )}
-                  style={{ background: active ? 'rgba(0,160,130,0.2)' : 'transparent' }}
-                >
-                  {label}
-                  {active && (
-                    <span
-                      className="absolute bottom-0 inset-x-0 h-[2px]"
-                      style={{ background: '#00e8ca', boxShadow: '0 0 8px #00e8ca, 0 0 14px rgba(0,232,202,0.4)' }}
-                    />
-                  )}
-                </button>
-              )
-            })}
-          </div>
+      {/* Nav click targets – transparent, sit exactly over the image's drawn nav text.
+          Active tab gets a teal underline glow that looks native to the image. */}
+      <div
+        className="absolute inset-x-0 z-30 flex items-stretch"
+        style={{ top: 134, height: 34, WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+      >
+        {/* left spacer to align with image nav start */}
+        <div style={{ width: 220 }} />
 
-          {/* Settings icon - right side, over the image's right control dot */}
-          <div className="pr-[74px]">
+        {NAV_ITEMS.map(({ path, label }) => {
+          const active = pathname === path
+          return (
             <button
-              onClick={() => navigate('/settings')}
-              className={clsx(
-                'w-6 h-6 flex items-center justify-center rounded transition-colors',
-                pathname === '/settings' ? 'text-[#40ead0]' : 'text-[#3a6070] hover:text-[#80c0b8]'
+              key={path}
+              onClick={() => navigate(path)}
+              title={label}
+              className="relative flex-1 h-full cursor-pointer"
+              style={{ background: 'transparent', border: 'none', maxWidth: 240 }}
+            >
+              {/* Only the active glow is visible – the image provides the text */}
+              {active && (
+                <span
+                  className="absolute bottom-0 inset-x-[10%] h-[2px]"
+                  style={{
+                    background: '#00e8ca',
+                    boxShadow: '0 0 10px #00e8ca, 0 0 18px rgba(0,232,202,0.6)',
+                  }}
+                />
               )}
-            >
-              <Settings className="w-3.5 h-3.5" />
             </button>
-          </div>
-        </nav>
+          )
+        })}
 
-        <UpdateBanner />
+        {/* right spacer */}
+        <div className="flex-1" />
 
-        {/* Page content - fills the rest of the window */}
-        <main className="flex-1 overflow-hidden relative">
-          {children}
-        </main>
+        {/* Settings gear – over the image's right control icon */}
+        <button
+          onClick={() => navigate('/settings')}
+          title="Settings"
+          className={clsx(
+            'w-10 h-full flex items-center justify-center transition-colors',
+            pathname === '/settings' ? 'text-[#40ead0]' : 'text-transparent hover:text-[#40ead0]'
+          )}
+          style={{ marginRight: 72 }}
+        >
+          <Settings className="w-3.5 h-3.5" />
+        </button>
+      </div>
+
+      <UpdateBanner />
+
+      {/* Page content */}
+      <div
+        className="absolute inset-x-0 bottom-0 z-10"
+        style={{ top: 168 }}
+      >
+        {children}
       </div>
     </div>
   )
