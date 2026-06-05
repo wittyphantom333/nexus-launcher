@@ -110,11 +110,11 @@ export default function HomePage() {
           Inner div is the actual scroll target. */}
       <div
         className="absolute overflow-hidden"
-        style={{ right: '4.5vw', top: 0, width: '30vw', height: '80%' }}
+        style={{ right: '5.5vw', top: 0, width: '28vw', height: '80%' }}
       >
         <div
           className="absolute overflow-y-auto"
-          style={{ top: '9.5vh', left: 0, right: 0, bottom: 0, paddingLeft: '0.5vw', paddingRight: '1vw', paddingBottom: '1vh' }}
+          style={{ top: '11.5vh', left: 0, right: 0, bottom: 0, paddingLeft: '2.5vw', paddingRight: '1vw', paddingBottom: '1vh' }}
         >
           <div className="space-y-5">
           {news.length === 0 && (
