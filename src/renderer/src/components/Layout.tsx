@@ -125,10 +125,10 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       <UpdateBanner />
 
-      {/* Page content — fills the content area, z:10 */}
+      {/* Page content — inset to frame interior so pages don't render under chrome */}
       <div
-        className="absolute inset-x-0 bottom-0 z-10"
-        style={{ top: '18.5vh' }}
+        className="absolute bottom-0 z-10"
+        style={{ top: '18.5vh', left: '6.5vw', right: '6.5vw' }}
       >
         {children}
       </div>

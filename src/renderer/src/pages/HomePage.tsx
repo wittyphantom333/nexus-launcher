@@ -34,14 +34,23 @@ export default function HomePage() {
     setNews,
   } = useStore()
 
-  // ── Fetch news directly in the renderer (same CSP as BackgroundLayer fetch) ──────
+  // ── Fetch news directly in the renderer ──────
   useEffect(() => {
-    fetch(GITHUB_NEWS_URL)
-      .then(r => r.json())
+    const url = `${GITHUB_NEWS_URL}?_=${Date.now()}`
+    fetch(url)
+      .then(r => {
+        if (!r.ok) throw new Error(`HTTP ${r.status}`)
+        return r.json()
+      })
       .then((data: unknown) => {
         if (Array.isArray(data)) setNews(data as NewsItem[])
       })
-      .catch(() => {})
+      .catch(() => {
+        // Fallback to IPC path if renderer fetch fails
+        window.electron.fetchNews(GITHUB_NEWS_URL)
+          .then(res => { if (res.success && Array.isArray(res.data)) setNews(res.data as NewsItem[]) })
+          .catch(() => {})
+      })
   }, [])
 
   // ── Patcher events ───────────────────────────────────────────────────────
@@ -116,9 +125,9 @@ export default function HomePage() {
       <div
         style={{
           position: 'absolute',
-          right: '5.5vw',
+          right: 0,
           top: 0,
-          width: '28vw',
+          width: '34vw',
           bottom: '14vh',
           overflowY: 'auto',
           overflowX: 'hidden',
@@ -236,7 +245,7 @@ export default function HomePage() {
       </button>
 
       {/* ── Server status — z:30 to render above the frame PNG ── */}
-      <div className="absolute flex flex-col gap-0.5" style={{ left: '5vw', bottom: '8.5vh', zIndex: 30 }}>
+      <div className="absolute flex flex-col gap-0.5" style={{ left: 0, bottom: '8.5vh', zIndex: 30 }}>
         {activeServer && (
           <div className="flex items-center gap-2 text-xs">
             <div className={clsx(
