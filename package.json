@@ -94,8 +94,7 @@
           "arch": ["x64"]
         }
       ],
-      "icon": "build/icon.ico",
-      "sign": false
+      "icon": "build/icon.ico"
     },
     "mac": {
       "target": [
