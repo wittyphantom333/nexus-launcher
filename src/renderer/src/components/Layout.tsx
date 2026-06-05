@@ -125,10 +125,11 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       <UpdateBanner />
 
-      {/* Page content — inset to frame interior so pages don't render under chrome */}
+      {/* Page content — z:25 (above frame PNG at z:20) so children can render normally.
+          Inset to frame interior so it can't cover the drawn chrome. */}
       <div
-        className="absolute bottom-0 z-10"
-        style={{ top: '18.5vh', left: '6.5vw', right: '6.5vw' }}
+        className="absolute bottom-0"
+        style={{ top: '18.5vh', left: '6.5vw', right: '6.5vw', zIndex: 25 }}
       >
         {children}
       </div>

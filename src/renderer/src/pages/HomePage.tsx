@@ -134,7 +134,6 @@ export default function HomePage() {
           paddingLeft: '2.5vw',
           paddingRight: '0.5vw',
           paddingBottom: '1vh',
-          zIndex: 30,
         }}
       >
         <div className="space-y-5">
@@ -219,7 +218,6 @@ export default function HomePage() {
           height: '5.47vh',
           background: 'transparent',
           border: 'none',
-          zIndex: 30,
           position: 'absolute',
         }}
       >
@@ -245,7 +243,7 @@ export default function HomePage() {
       </button>
 
       {/* ── Server status — z:30 to render above the frame PNG ── */}
-      <div className="absolute flex flex-col gap-0.5" style={{ left: 0, bottom: '8.5vh', zIndex: 30 }}>
+      <div className="absolute flex flex-col gap-0.5" style={{ left: 0, bottom: '8.5vh' }}>
         {activeServer && (
           <div className="flex items-center gap-2 text-xs">
             <div className={clsx(
