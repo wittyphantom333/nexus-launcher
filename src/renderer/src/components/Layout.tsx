@@ -129,7 +129,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           Inset to frame interior so it can't cover the drawn chrome. */}
       <div
         className="absolute bottom-0"
-        style={{ top: '17vh', left: '6.5vw', right: '6.5vw', zIndex: 25 }}
+        style={{ top: '18vh', left: '6.5vw', right: '6.5vw', zIndex: 25 }}
       >
         {children}
       </div>

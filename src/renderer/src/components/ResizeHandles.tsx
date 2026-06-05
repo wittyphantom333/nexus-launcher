@@ -15,16 +15,17 @@ const E = 6 // edge thickness px
 // Inset from window edge — launcher.png has decorative chrome that extends
 // beyond the visible filled pixels; handles need to be on the visible edge.
 const INSET = 48
+const INSET_BOTTOM = 72  // bottom chrome (PLAY bar) extends further
 
 const HANDLES: { dir: Dir; style: React.CSSProperties }[] = [
   { dir: 'n',  style: { top: INSET, left: INSET + E * 2, right: INSET + E * 2, height: E } },
-  { dir: 's',  style: { bottom: INSET, left: INSET + E * 2, right: INSET + E * 2, height: E } },
-  { dir: 'e',  style: { top: INSET + E * 2, bottom: INSET + E * 2, right: INSET, width: E } },
-  { dir: 'w',  style: { top: INSET + E * 2, bottom: INSET + E * 2, left: INSET, width: E } },
+  { dir: 's',  style: { bottom: INSET_BOTTOM, left: INSET + E * 2, right: INSET + E * 2, height: E } },
+  { dir: 'e',  style: { top: INSET + E * 2, bottom: INSET_BOTTOM + E * 2, right: INSET, width: E } },
+  { dir: 'w',  style: { top: INSET + E * 2, bottom: INSET_BOTTOM + E * 2, left: INSET, width: E } },
   { dir: 'nw', style: { top: INSET, left: INSET, width: E * 3, height: E * 3 } },
   { dir: 'ne', style: { top: INSET, right: INSET, width: E * 3, height: E * 3 } },
-  { dir: 'sw', style: { bottom: INSET, left: INSET, width: E * 3, height: E * 3 } },
-  { dir: 'se', style: { bottom: INSET, right: INSET, width: E * 3, height: E * 3 } },
+  { dir: 'sw', style: { bottom: INSET_BOTTOM, left: INSET, width: E * 3, height: E * 3 } },
+  { dir: 'se', style: { bottom: INSET_BOTTOM, right: INSET, width: E * 3, height: E * 3 } },
 ]
 
 export default function ResizeHandles() {
