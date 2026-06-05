@@ -14,7 +14,7 @@ const E = 6 // edge thickness px
 
 // Inset from window edge — launcher.png has decorative chrome that extends
 // beyond the visible filled pixels; handles need to be on the visible edge.
-const INSET = 32
+const INSET = 48
 
 const HANDLES: { dir: Dir; style: React.CSSProperties }[] = [
   { dir: 'n',  style: { top: INSET, left: INSET + E * 2, right: INSET + E * 2, height: E } },
