@@ -105,19 +105,25 @@ export default function HomePage() {
       {/* ── Background image slider (fills left content area) ── */}
       <ContentSlider slides={SLIDES} interval={7} />
 
-      {/* NEWS panel — flex column so the inner area scrolls reliably */}
+      {/* NEWS panel — single scrollable div, mask hides content above header zone */}
       <div
-        className="absolute overflow-hidden flex flex-col"
-        style={{ right: '5.5vw', top: 0, width: '28vw', bottom: '14vh' }}
+        style={{
+          position: 'absolute',
+          right: '5.5vw',
+          top: 0,
+          width: '28vw',
+          bottom: '14vh',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          paddingTop: '11.5vh',
+          paddingLeft: '2.5vw',
+          paddingRight: '0.5vw',
+          paddingBottom: '1vh',
+          WebkitMaskImage: 'linear-gradient(to bottom, transparent 0, transparent 11vh, black 11.5vh)',
+          maskImage: 'linear-gradient(to bottom, transparent 0, transparent 11vh, black 11.5vh)',
+        } as React.CSSProperties}
       >
-        {/* transparent spacer — covers drawn NEWS icon+header, clips content above it on scroll */}
-        <div style={{ height: '11.5vh', flexShrink: 0 }} />
-        {/* scrollable feed — min-h-0 required for flex children to scroll */}
-        <div
-          className="flex-1 overflow-y-auto min-h-0"
-          style={{ paddingLeft: '2.5vw', paddingRight: '0.5vw', paddingBottom: '1vh' }}
-        >
-          <div className="space-y-5">
+        <div className="space-y-5">
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
               No news yet
@@ -150,7 +156,6 @@ export default function HomePage() {
               </p>
             </div>
           ))}
-          </div>
         </div>
       </div>
 
@@ -218,7 +223,7 @@ export default function HomePage() {
 
       {/* ── Server status + errors — bottom-left inside the launcher bar ── */}
       <div className="absolute flex flex-col gap-0.5" style={{ left: '5vw', bottom: '8.5vh' }}>
-        {activeServer ? (
+        {activeServer && (
           <div className="flex items-center gap-2 text-xs">
             <div className={clsx(
               'w-1.5 h-1.5 rounded-full shrink-0',
@@ -234,8 +239,6 @@ export default function HomePage() {
               </span>
             )}
           </div>
-        ) : (
-          <p className="text-[#2a5040] text-xs">No server selected</p>
         )}
         {isError && launchError && (
           <p className="text-[#e05050] text-[10px] max-w-[320px]">{launchError}</p>
