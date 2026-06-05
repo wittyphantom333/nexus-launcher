@@ -24,13 +24,18 @@ jobs:
           body: |
             ## Installation
 
-            Download the installer for your platform below.
+            ### Windows
+            **Recommended:** Download the `.zip` file, extract it, and run `Nexus Launcher.exe` inside — no installation required, no SmartScreen prompt.
 
-            ### ⚠️ Windows SmartScreen Warning
-            This build is not yet commercially signed. Windows may show an "unrecognized app" warning.
-            To install:
+            Alternatively, use the `.exe` installer. If Windows shows **"Windows protected your PC"**:
             1. Click **"More info"**
             2. Click **"Run anyway"**
+
+            ### macOS
+            Download the `.dmg`, open it, and drag the app to Applications.
+
+            ### Linux
+            Download the `.AppImage`, make it executable (`chmod +x`), and run it.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -45,6 +50,7 @@ jobs:
             build_cmd: npm run build:win
             artifact_glob: |
               dist/*.exe
+              dist/*.zip
 
           - os: macos-latest
             build_cmd: npm run build:mac
