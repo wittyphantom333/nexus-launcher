@@ -1,104 +1,128 @@
-import { useEffect, useState, useCallback } from 'react'
+﻿import { useEffect, useState, useCallback } from 'react'
 import { clsx } from 'clsx'
-import { Play, AlertCircle, Wifi, WifiOff, Users, Clock, Newspaper, ChevronRight } from 'lucide-react'
+import { Globe } from 'lucide-react'
 import { useStore } from '../store'
-import PatchProgressBar from '../components/PatchProgressBar'
 import type { NewsItem, PatchProgress } from '../types'
-import { formatDistanceToNow } from 'date-fns'
 
+// â”€â”€ WildStar-style action button â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+function WsActionButton({
+  label,
+  disabled,
+  isLoading,
+  launchState,
+  onClick,
+}: {
+  label: string
+  disabled: boolean
+  isLoading: boolean
+  launchState: string
+  onClick: () => void
+}) {
+  const isReady = launchState === 'idle'
+  const isError = launchState === 'error'
+
+  const gradient = isReady
+    ? 'linear-gradient(180deg, #1f8a28 0%, #0d5014 100%)'
+    : isError
+    ? 'linear-gradient(180deg, #8a1f1f 0%, #5a0d0d 100%)'
+    : 'linear-gradient(180deg, #4a2888 0%, #1448a8 100%)'
+
+  const glow = isReady
+    ? 'rgba(26,138,32,0.55)'
+    : isError
+    ? 'rgba(138,26,26,0.45)'
+    : 'rgba(74,40,136,0.55)'
+
+  return (
+    <div className="flex items-center">
+      {/* Left bracket */}
+      <div className="w-5 h-9 border-t-2 border-b-2 border-l-2 border-[#7a5818] bg-gradient-to-b from-[#2a1a0a] to-[#150d05] rounded-l-sm" />
+      {/* Button body */}
+      <button
+        onClick={onClick}
+        disabled={disabled}
+        className="relative h-10 px-14 font-bold text-base tracking-[0.15em] uppercase text-white border-y-2 border-[#7a5818] transition-all duration-200 min-w-[200px]"
+        style={{
+          background: gradient,
+          boxShadow: disabled ? 'none' : `inset 0 1px 0 rgba(255,255,255,0.15), 0 0 22px ${glow}`,
+          opacity: disabled ? 0.55 : 1,
+          cursor: disabled ? 'not-allowed' : 'pointer',
+        }}
+      >
+        {isLoading && (
+          <span className="absolute left-4 top-1/2 -translate-y-1/2 w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+        )}
+        {label}
+      </button>
+      {/* Right bracket */}
+      <div className="w-5 h-9 border-t-2 border-b-2 border-r-2 border-[#7a5818] bg-gradient-to-b from-[#2a1a0a] to-[#150d05] rounded-r-sm" />
+    </div>
+  )
+}
+
+// â”€â”€ Main page â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 export default function HomePage() {
   const {
     settings,
     activeServer,
     serverStatuses,
     launchState,
+    launchError,
     setLaunchState,
     patchProgress,
-    setPatchProgress
+    setPatchProgress,
   } = useStore()
 
   const [news, setNews] = useState<NewsItem[]>([])
   const [newsLoading, setNewsLoading] = useState(false)
 
-  // ─── Load news for active server ────────────────────────────────────────
+  // Load news for active server
   useEffect(() => {
-    if (!activeServer?.newsUrl) {
-      setNews([])
-      return
-    }
+    if (!activeServer?.newsUrl) { setNews([]); return }
     setNewsLoading(true)
     window.electron
       .fetchNews(activeServer.newsUrl)
-      .then(res => {
-        if (res.success && Array.isArray(res.data)) setNews(res.data as NewsItem[])
-      })
+      .then(res => { if (res.success && Array.isArray(res.data)) setNews(res.data as NewsItem[]) })
       .finally(() => setNewsLoading(false))
   }, [activeServer?.id, activeServer?.newsUrl])
 
-  // ─── Listen for patcher events ──────────────────────────────────────────
+  // Patcher events
   useEffect(() => {
     const offProgress = window.electron.onPatchProgress((p: PatchProgress) => setPatchProgress(p))
-    const offComplete = window.electron.onPatchComplete(() => {
-      setPatchProgress(null)
-      setLaunchState('idle')
-    })
-    const offError = window.electron.onPatchError(err => {
-      setPatchProgress(null)
-      setLaunchState('error', err.message)
-    })
-    return () => {
-      offProgress()
-      offComplete()
-      offError()
-    }
+    const offComplete = window.electron.onPatchComplete(() => { setPatchProgress(null); setLaunchState('idle') })
+    const offError = window.electron.onPatchError(err => { setPatchProgress(null); setLaunchState('error', err.message) })
+    return () => { offProgress(); offComplete(); offError() }
   }, [])
 
   const status = activeServer ? serverStatuses[activeServer.id] : undefined
 
-  // ─── Launch flow ────────────────────────────────────────────────────────
   const handleLaunch = useCallback(async () => {
     if (!activeServer) return setLaunchState('error', 'No server selected')
     if (!settings.gamePath) return setLaunchState('error', 'Game path not configured')
 
     setLaunchState('checking')
-
-    // Validate path
     const validation = await window.electron.validateGamePath(settings.gamePath)
-    if (!validation.valid) {
-      return setLaunchState('error', validation.error ?? 'Invalid game path')
-    }
+    if (!validation.valid) return setLaunchState('error', validation.error ?? 'Invalid game path')
 
-    // Check patch if manifest available
     if (activeServer.patchManifestUrl) {
       const check = await window.electron.checkPatch(activeServer.patchManifestUrl, settings.gamePath)
       if (check.needsPatch) {
         setLaunchState('patching')
         await window.electron.startPatch(activeServer.patchManifestUrl, settings.gamePath)
-        // patching state resolves via events above
         return
       }
     }
 
-    // Launch!
     setLaunchState('launching')
     const result = await window.electron.launchGame(
-      settings.gamePath,
-      activeServer.host,
-      activeServer.port,
-      settings.language,
-      settings.architecture
+      settings.gamePath, activeServer.host, activeServer.port,
+      settings.language, settings.architecture
     )
 
     if (result.success) {
       if (settings.launchAndClose) window.electron.close()
       else setLaunchState('idle')
-      // Update Discord RPC
-      if (settings.discordRPC) {
-        window.electron.updateDiscord({
-          details: `Playing on ${activeServer.name}`,
-          state: 'In-game'
-        })
-      }
+      if (settings.discordRPC) window.electron.updateDiscord({ details: `Playing on ${activeServer.name}`, state: 'In-game' })
     } else {
       setLaunchState('error', result.error ?? 'Failed to launch')
     }
@@ -109,183 +133,151 @@ export default function HomePage() {
   const buttonDisabled = isPatching || isLaunching || !activeServer
 
   const buttonLabel =
-    launchState === 'checking' ? 'Checking…'
-    : launchState === 'patching' ? 'Patching…'
-    : launchState === 'launching' ? 'Launching…'
+    launchState === 'checking' ? 'Checking...'
+    : launchState === 'patching' ? 'Patching...'
+    : launchState === 'launching' ? 'Launching...'
     : launchState === 'error' ? 'Retry'
     : 'Play'
 
+  const hexBg = "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='24'%3E%3Cpath d='M14 0 L27 7 L27 17 L14 24 L1 17 L1 7 Z' fill='none' stroke='rgba(0%2C180%2C160%2C0.07)' stroke-width='0.5'/%3E%3C/svg%3E\")"
+
   return (
-    <div className="flex h-full overflow-hidden">
-      {/* ─── Left panel: server info + launch ─── */}
-      <div className="flex flex-col w-80 shrink-0 border-r border-nexus-border p-4 gap-4 overflow-y-auto">
-        {/* Active server banner */}
-        {activeServer ? (
-          <div className="nexus-card p-4 clip-hex-top">
-            {/* Server banner image */}
-            {activeServer.bannerUrl && (
-              <div className="rounded-xl overflow-hidden mb-3 h-24 bg-nexus-surface">
-                <img src={activeServer.bannerUrl} alt="" className="w-full h-full object-cover opacity-80" />
+    <div className="flex flex-col h-full">
+
+      {/* â”€â”€ Main content: artwork bg + overlaid panels â”€â”€ */}
+      <div className="flex-1 relative overflow-hidden">
+
+        {/* Bottom-left server status overlay */}
+        <div className="absolute bottom-3 left-4 z-20 flex flex-col gap-1.5">
+          {!activeServer ? (
+            <div className="text-[#4a7090] text-xs px-2.5 py-1 rounded bg-black/50 border border-white/8 select-none">
+              No server selected â€” go to{' '}
+              <span className="text-[#7090a0] font-semibold">SERVERS</span>
+            </div>
+          ) : (
+            <div className="flex items-center gap-2 px-3 py-1.5 rounded bg-black/55 border border-white/10 text-xs">
+              <div className={clsx(
+                'w-1.5 h-1.5 rounded-full shrink-0',
+                status?.online ? 'bg-[#10b981]' : 'bg-[#ef4444]',
+                status?.online && 'shadow-[0_0_5px_#10b981]'
+              )} />
+              <span className="text-white/85 font-semibold">{activeServer.name}</span>
+              <span className="text-white/40 font-mono">{activeServer.host}:{activeServer.port}</span>
+              {status?.playerCount !== undefined && (
+                <span className="text-white/40">{status.playerCount.toLocaleString()} online</span>
+              )}
+            </div>
+          )}
+          {launchState === 'error' && launchError && (
+            <div className="px-3 py-1.5 rounded bg-[#ef4444]/20 border border-[#ef4444]/30 text-xs text-[#ef4444] max-w-xs">
+              {launchError}
+            </div>
+          )}
+        </div>
+
+        {/* â”€â”€ Right: news panel â”€â”€ */}
+        <div
+          className="absolute right-0 top-0 bottom-0 w-[272px] flex flex-col overflow-hidden"
+          style={{
+            background: 'rgba(4,16,14,0.90)',
+            borderLeft: '1px solid rgba(0,180,160,0.25)',
+            backgroundImage: hexBg,
+          }}
+        >
+          {/* Corner brackets */}
+          <div className="absolute top-2 left-2 w-3 h-3 border-t-2 border-l-2 border-[#00e8ca] pointer-events-none z-10" style={{ boxShadow: '-1px -1px 5px rgba(0,232,202,0.35)' }} />
+          <div className="absolute top-2 right-2 w-3 h-3 border-t-2 border-r-2 border-[#00e8ca] pointer-events-none z-10" style={{ boxShadow: '1px -1px 5px rgba(0,232,202,0.35)' }} />
+          <div className="absolute bottom-2 left-2 w-3 h-3 border-b-2 border-l-2 border-[#00e8ca] pointer-events-none z-10" style={{ boxShadow: '-1px 1px 5px rgba(0,232,202,0.35)' }} />
+          <div className="absolute bottom-2 right-2 w-3 h-3 border-b-2 border-r-2 border-[#00e8ca] pointer-events-none z-10" style={{ boxShadow: '1px 1px 5px rgba(0,232,202,0.35)' }} />
+
+          {/* Header */}
+          <div className="flex items-center gap-2.5 px-4 py-3 border-b border-[rgba(0,180,160,0.18)] shrink-0">
+            <div className="w-6 h-6 rounded-full bg-[#0d5050] border border-[#007a6a] flex items-center justify-center shrink-0">
+              <Globe className="w-3.5 h-3.5 text-[#00c8b0]" />
+            </div>
+            <span className="text-[#c8901a] font-bold text-sm tracking-[0.22em] uppercase">NEWS</span>
+          </div>
+
+          {/* News feed */}
+          <div className="flex-1 overflow-y-auto px-4 py-3 space-y-4">
+            {newsLoading && (
+              <div className="flex justify-center py-8">
+                <div className="w-4 h-4 border-2 border-[#00c8b0]/20 border-t-[#00c8b0] rounded-full animate-spin" />
               </div>
             )}
-
-            {/* Logo + Name */}
-            <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-xl bg-nexus-surface border border-nexus-border overflow-hidden flex items-center justify-center">
-                {activeServer.logoUrl ? (
-                  <img src={activeServer.logoUrl} alt="" className="w-full h-full object-cover" />
-                ) : (
-                  <span className="font-display font-bold text-nexus-primary text-base">
-                    {activeServer.name.charAt(0)}
-                  </span>
+            {!newsLoading && news.length === 0 && (
+              <p className="text-[#3a6060] text-xs text-center py-8">
+                {activeServer?.newsUrl ? 'No news available' : 'Configure a news URL in server settings'}
+              </p>
+            )}
+            {news.map(item => (
+              <div
+                key={item.id}
+                className="cursor-pointer group"
+                onClick={() => item.url && window.electron.openExternal(item.url)}
+              >
+                <h3 className="text-white font-bold text-xs uppercase leading-snug group-hover:text-[#00e8ca] transition-colors">
+                  {item.title}
+                </h3>
+                {item.summary && (
+                  <p className="text-[#5a8080] text-xs mt-1 leading-relaxed line-clamp-3">{item.summary}</p>
                 )}
+                <span className="text-[#00c8b0] text-xs font-bold mt-0.5 inline-block">[MORE]</span>
               </div>
-              <div>
-                <p className="font-semibold text-nexus-text-primary text-sm">{activeServer.name}</p>
-                <p className="font-mono text-nexus-text-muted text-xs">{activeServer.host}:{activeServer.port}</p>
-              </div>
-            </div>
-
-            {/* Status */}
-            <div className="flex items-center gap-2 text-xs">
-              {status ? (
-                status.online ? (
-                  <span className="flex items-center gap-1.5 text-nexus-success">
-                    <Wifi className="w-3 h-3" /> Online
-                  </span>
-                ) : (
-                  <span className="flex items-center gap-1.5 text-nexus-error/70">
-                    <WifiOff className="w-3 h-3" /> Offline
-                  </span>
-                )
-              ) : (
-                <span className="text-nexus-text-muted">Checking…</span>
-              )}
-              {status?.playerCount !== undefined && (
-                <span className="flex items-center gap-1 text-nexus-text-muted ml-2">
-                  <Users className="w-3 h-3" /> {status.playerCount.toLocaleString()}
-                </span>
-              )}
-              {status?.latency !== undefined && (
-                <span className="flex items-center gap-1 text-nexus-text-muted">
-                  <Clock className="w-3 h-3" /> {status.latency}ms
-                </span>
-              )}
-            </div>
+            ))}
           </div>
-        ) : (
-          <div className="nexus-card p-4 flex flex-col items-center justify-center gap-2 text-center min-h-[120px]">
-            <p className="text-nexus-text-muted text-sm">No server selected</p>
-            <p className="text-nexus-text-muted text-xs">Go to Servers to add one</p>
-          </div>
-        )}
+        </div>
+      </div>
 
-        {/* Error */}
-        {launchState === 'error' && (
-          <div className="flex items-start gap-2 px-3 py-2.5 rounded-xl bg-nexus-error/10 border border-nexus-error/20 text-xs text-nexus-error">
-            <AlertCircle className="w-3.5 h-3.5 mt-0.5 shrink-0" />
-            <span>{useStore.getState().launchError}</span>
-          </div>
-        )}
-
-        {/* Patch progress */}
+      {/* â”€â”€ Progress strip â”€â”€ */}
+      <div
+        className="relative shrink-0 overflow-hidden transition-all duration-200"
+        style={{
+          height: patchProgress ? 28 : 3,
+          background: 'rgba(3,10,8,0.92)',
+          borderTop: '1px solid rgba(0,100,90,0.3)',
+        }}
+      >
+        <div
+          className="absolute left-0 top-0 h-[3px] transition-all duration-300"
+          style={{
+            width: patchProgress ? `${patchProgress.percent}%` : '0%',
+            background: '#00c8b0',
+            boxShadow: '0 0 8px #00c8b0, 0 0 18px rgba(0,200,176,0.3)',
+          }}
+        />
         {patchProgress && (
-          <PatchProgressBar
-            progress={patchProgress}
-            onCancel={() => window.electron.cancelPatch()}
-          />
-        )}
-
-        {/* Launch button */}
-        <button
-          onClick={handleLaunch}
-          disabled={buttonDisabled}
-          className={clsx(
-            'btn-primary flex items-center justify-center gap-2 w-full text-base font-display font-bold tracking-wider uppercase py-3',
-            buttonDisabled && 'opacity-50 cursor-not-allowed hover:shadow-none hover:scale-100'
-          )}
-        >
-          {isLaunching || isPatching ? (
-            <div className="w-4 h-4 border-2 border-nexus-bg/50 border-t-nexus-bg rounded-full animate-spin" />
-          ) : (
-            <Play className="w-4 h-4" />
-          )}
-          {buttonLabel}
-        </button>
-
-        {/* Game path warning */}
-        {!settings.gamePath && (
-          <p className="text-nexus-warning text-xs text-center">
-            Configure your game path in Settings
-          </p>
+          <div className="absolute inset-0 flex items-end px-3 pb-1 pt-[5px] gap-3">
+            <span className="text-white text-[11px] font-bold">{patchProgress.percent}%</span>
+            <span className="text-[#3a6060] text-[10px] font-mono truncate">{patchProgress.currentFile}</span>
+            <button
+              onClick={() => window.electron.cancelPatch()}
+              className="ml-auto text-[10px] text-[#5a6060] hover:text-[#ef4444] transition-colors"
+            >
+              cancel
+            </button>
+          </div>
         )}
       </div>
 
-      {/* ─── Right panel: news feed ─── */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <div className="flex items-center gap-2 px-5 py-3 border-b border-nexus-border shrink-0">
-          <Newspaper className="w-4 h-4 text-nexus-primary" />
-          <h2 className="font-display font-semibold text-nexus-text-primary text-sm tracking-wide uppercase">
-            {activeServer ? `${activeServer.name} – News` : 'News'}
-          </h2>
-        </div>
-
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {newsLoading && (
-            <div className="flex justify-center py-12">
-              <div className="w-6 h-6 border-2 border-nexus-border border-t-nexus-primary rounded-full animate-spin" />
-            </div>
-          )}
-
-          {!newsLoading && news.length === 0 && (
-            <div className="flex flex-col items-center justify-center py-16 gap-2 text-center">
-              <Newspaper className="w-8 h-8 text-nexus-text-muted opacity-30" />
-              <p className="text-nexus-text-muted text-sm">
-                {activeServer?.newsUrl ? 'No news available' : 'No news URL configured for this server'}
-              </p>
-            </div>
-          )}
-
-          {news.map(item => (
-            <article
-              key={item.id}
-              className="nexus-card p-4 cursor-pointer"
-              onClick={() => item.url && window.electron.openExternal(item.url)}
-            >
-              {item.imageUrl && (
-                <div className="rounded-xl overflow-hidden mb-3 h-32 bg-nexus-surface">
-                  <img src={item.imageUrl} alt="" className="w-full h-full object-cover opacity-90" />
-                </div>
-              )}
-              <div className="flex items-start gap-2">
-                <div className="flex-1 min-w-0">
-                  {item.isPinned && (
-                    <span className="inline-block text-[10px] font-semibold text-nexus-gold bg-nexus-gold/10 border border-nexus-gold/20 rounded px-1.5 py-0.5 mb-1">
-                      PINNED
-                    </span>
-                  )}
-                  <h3 className="font-semibold text-nexus-text-primary text-sm leading-snug">{item.title}</h3>
-                  <p className="text-nexus-text-muted text-xs mt-1 leading-relaxed line-clamp-2">
-                    {item.summary}
-                  </p>
-                  <div className="flex items-center gap-2 mt-2 text-[11px] text-nexus-text-muted">
-                    {item.author && <span>{item.author}</span>}
-                    <span className="opacity-50">·</span>
-                    <span>{formatDistanceToNow(new Date(item.date), { addSuffix: true })}</span>
-                    {item.tags?.map(t => (
-                      <span key={t} className="px-1.5 py-0.5 bg-nexus-primary/10 text-nexus-primary rounded text-[10px]">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                {item.url && (
-                  <ChevronRight className="w-4 h-4 text-nexus-text-muted shrink-0 mt-0.5" />
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
+      {/* â”€â”€ Action button footer â”€â”€ */}
+      <div
+        className="flex items-center justify-center h-14 shrink-0"
+        style={{ background: 'rgba(3,8,6,0.96)', borderTop: '1px solid rgba(0,80,70,0.4)' }}
+      >
+        {!settings.gamePath ? (
+          <p className="text-[#c8901a] text-xs tracking-wide">
+            Configure your game path in Settings âš™
+          </p>
+        ) : (
+          <WsActionButton
+            label={buttonLabel}
+            disabled={buttonDisabled}
+            isLoading={isLaunching || isPatching}
+            launchState={launchState}
+            onClick={handleLaunch}
+          />
+        )}
       </div>
     </div>
   )

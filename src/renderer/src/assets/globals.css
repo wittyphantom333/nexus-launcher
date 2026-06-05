@@ -131,4 +131,18 @@
       linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
     background-size: 40px 40px;
   }
+
+  /* WildStar metallic logo text */
+  .ws-logo-text {
+    background: linear-gradient(180deg, #e0e8f0 0%, #a8b8c8 38%, #7a8898 60%, #b8c8d8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.8)) drop-shadow(0 0 10px rgba(180,210,240,0.15));
+  }
+
+  /* Hexagonal nav/panel texture */
+  .ws-hex-bg {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='24'%3E%3Cpath d='M14 0 L27 7 L27 17 L14 24 L1 17 L1 7 Z' fill='none' stroke='rgba(0%2C180%2C160%2C0.08)' stroke-width='0.5'/%3E%3C/svg%3E");
+  }
 }

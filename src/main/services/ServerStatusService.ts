@@ -35,7 +35,7 @@ export class ServerStatusService {
 
     // Otherwise treat as host:port for TCP ping
     const [host, portStr] = url.split(':')
-    const port = parseInt(portStr ?? '21015', 10)
+    const port = parseInt(portStr ?? '24000', 10)
     return this.tcpPing(host, port, lastChecked)
   }
 

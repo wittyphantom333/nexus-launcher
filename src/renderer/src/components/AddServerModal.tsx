@@ -13,7 +13,7 @@ export default function AddServerModal({ onClose }: Props) {
   const [form, setForm] = useState({
     name: '',
     host: '',
-    port: '21015',
+    port: '24000',
     description: '',
     website: '',
     newsUrl: '',
@@ -54,7 +54,7 @@ export default function AddServerModal({ onClose }: Props) {
   const fields: { key: keyof typeof form; label: string; placeholder: string; required?: boolean; type?: string }[] = [
     { key: 'name', label: 'Server Name', placeholder: 'My WildStar Server', required: true },
     { key: 'host', label: 'Host / IP', placeholder: 'play.myserver.com or 192.168.1.1', required: true },
-    { key: 'port', label: 'Auth Port', placeholder: '21015', required: true },
+    { key: 'port', label: 'Auth Port', placeholder: '24000', required: true },
     { key: 'description', label: 'Description', placeholder: 'Optional short description' },
     { key: 'website', label: 'Website URL', placeholder: 'https://myserver.com' },
     { key: 'newsUrl', label: 'News JSON URL', placeholder: 'https://api.myserver.com/news' },

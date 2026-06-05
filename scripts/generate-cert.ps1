@@ -31,7 +31,9 @@ Write-Host "Certificate thumbprint: $($cert.Thumbprint)" -ForegroundColor Green
 
 # Export PFX
 $securePass = ConvertTo-SecureString $Password -AsPlainText -Force
-$outPath = (Resolve-Path (Split-Path $OutFile -Parent)).Path + "\" + (Split-Path $OutFile -Leaf)
+$outDir = Split-Path $OutFile -Parent
+if (-not (Test-Path $outDir)) { New-Item -ItemType Directory -Path $outDir -Force | Out-Null }
+$outPath = (Join-Path (Resolve-Path $outDir).Path (Split-Path $OutFile -Leaf))
 Export-PfxCertificate -Cert $cert -FilePath $outPath -Password $securePass | Out-Null
 
 Write-Host "PFX saved to: $outPath" -ForegroundColor Green

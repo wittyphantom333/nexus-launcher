@@ -1,139 +1,145 @@
 import { ReactNode } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { clsx } from 'clsx'
-import {
-  Home,
-  Server,
-  FileText,
-  Settings,
-  ChevronLeft,
-  Minus,
-  Square,
-  X,
-  RefreshCw
-} from 'lucide-react'
-import { useStore } from '../store'
+import { Settings, Minus, X } from 'lucide-react'
 import BackgroundLayer from './BackgroundLayer'
 import UpdateBanner from './UpdateBanner'
 
 const NAV_ITEMS = [
-  { path: '/', label: 'Home', icon: Home },
-  { path: '/servers', label: 'Servers', icon: Server },
-  { path: '/patch-notes', label: 'Patch Notes', icon: FileText },
-  { path: '/settings', label: 'Settings', icon: Settings }
+  { path: '/', label: 'THE GAME' },
+  { path: '/servers', label: 'SERVERS' },
+  { path: '/patch-notes', label: 'PATCH NOTES' },
 ]
+
+function CornerBracket({ pos }: { pos: 'tl' | 'tr' | 'bl' | 'br' }) {
+  const posClass = {
+    tl: 'top-1 left-1 border-t-2 border-l-2',
+    tr: 'top-1 right-1 border-t-2 border-r-2',
+    bl: 'bottom-1 left-1 border-b-2 border-l-2',
+    br: 'bottom-1 right-1 border-b-2 border-r-2',
+  }[pos]
+  return <div className={clsx('absolute w-6 h-6 pointer-events-none z-30 border-[#7a5818]', posClass)} />
+}
 
 export default function Layout({ children }: { children: ReactNode }) {
   const navigate = useNavigate()
   const { pathname } = useLocation()
-  const { sidebarExpanded, toggleSidebar } = useStore()
 
   return (
-    <div className="relative flex flex-col h-screen w-screen overflow-hidden bg-nexus-bg">
-      {/* Background */}
+    <div
+      className="relative flex flex-col h-screen w-screen overflow-hidden bg-[#050810]"
+      style={{ border: '2px solid #3a2510', boxShadow: 'inset 0 0 0 1px rgba(120,85,20,0.45)' }}
+    >
+      {/* Background artwork */}
       <BackgroundLayer />
 
-      {/* Subtle grid overlay */}
-      <div className="absolute inset-0 bg-grid opacity-50 pointer-events-none z-0" />
+      {/* Corner ornaments */}
+      <CornerBracket pos="tl" />
+      <CornerBracket pos="tr" />
+      <CornerBracket pos="bl" />
+      <CornerBracket pos="br" />
 
-      {/* Titlebar (drag region + window controls) */}
-      <div
-        className="relative z-20 flex items-center justify-between px-4 h-10 shrink-0"
-        style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
-      >
-        {/* Logo */}
-        <div className="flex items-center gap-2 select-none" style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}>
-          <div className="w-6 h-6 rounded-md bg-nexus-primary/20 border border-nexus-primary/40 flex items-center justify-center">
-            <RefreshCw className="w-3.5 h-3.5 text-nexus-primary" />
-          </div>
-          <span className="font-display font-bold text-base tracking-wider text-nexus-primary uppercase">
-            Nexus Launcher
-          </span>
-        </div>
+      {/* Content stack */}
+      <div className="relative z-10 flex flex-col h-full">
 
-        {/* Window controls */}
+        {/* ── Title bar ── */}
         <div
-          className="flex items-center gap-1"
-          style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+          className="relative flex items-center h-11 shrink-0 px-3"
+          style={{ WebkitAppRegion: 'drag' } as React.CSSProperties}
         >
-          <button
-            onClick={() => window.electron.minimize()}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-nexus-text-muted hover:text-nexus-text-secondary hover:bg-white/5 transition-colors"
+          {/* Social icon placeholders */}
+          <div
+            className="flex items-center gap-1.5"
+            style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
           >
-            <Minus className="w-3.5 h-3.5" />
-          </button>
-          <button
-            onClick={() => window.electron.maximize()}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-nexus-text-muted hover:text-nexus-text-secondary hover:bg-white/5 transition-colors"
+            {['f', 't'].map(l => (
+              <div
+                key={l}
+                className="w-5 h-5 flex items-center justify-center border border-[#3a2510] bg-[#0d0805] text-[10px] font-bold text-[#7a5818] rounded-sm select-none cursor-default"
+              >
+                {l}
+              </div>
+            ))}
+          </div>
+
+          {/* Logo — centered */}
+          <div className="absolute inset-x-0 top-0 h-full flex items-center justify-center pointer-events-none select-none">
+            <span className="ws-logo-text text-2xl font-black tracking-[0.2em] uppercase">
+              NEXUS LAUNCHER
+            </span>
+          </div>
+
+          {/* Window controls */}
+          <div
+            className="ml-auto flex items-center gap-1.5"
+            style={{ WebkitAppRegion: 'no-drag' } as React.CSSProperties}
           >
-            <Square className="w-3 h-3" />
-          </button>
-          <button
-            onClick={() => window.electron.close()}
-            className="w-7 h-7 rounded-lg flex items-center justify-center text-nexus-text-muted hover:text-nexus-error hover:bg-nexus-error/10 transition-colors"
-          >
-            <X className="w-3.5 h-3.5" />
-          </button>
+            <button
+              onClick={() => window.electron.minimize()}
+              className="w-6 h-5 flex items-center justify-center border border-[#3a2510] bg-[#0d0805] text-[#7a8890] hover:text-white hover:bg-[#1a2a30] transition-colors rounded-sm"
+            >
+              <Minus className="w-3 h-3" />
+            </button>
+            <button
+              onClick={() => window.electron.close()}
+              className="w-5 h-5 flex items-center justify-center rounded-full bg-[#8b1a1a] border border-[#6b1010] text-white/70 hover:text-white hover:bg-[#cc2222] transition-colors"
+            >
+              <X className="w-2.5 h-2.5" />
+            </button>
+          </div>
         </div>
-      </div>
 
-      {/* Update banner */}
-      <UpdateBanner />
-
-      {/* Body */}
-      <div className="relative z-10 flex flex-1 overflow-hidden">
-        {/* Sidebar */}
-        <aside
-          className={clsx(
-            'relative flex flex-col shrink-0 bg-nexus-surface/80 backdrop-blur-md border-r border-nexus-border transition-all duration-300',
-            sidebarExpanded ? 'w-52' : 'w-14'
-          )}
+        {/* ── Nav bar ── */}
+        <nav
+          className="relative flex items-stretch h-8 shrink-0 ws-hex-bg"
+          style={{
+            background: 'rgba(4,12,10,0.95)',
+            borderTop: '1px solid rgba(0,180,160,0.15)',
+            borderBottom: '1px solid rgba(0,180,160,0.22)',
+          }}
         >
-          {/* Nav links */}
-          <nav className="flex flex-col gap-1 p-2 flex-1">
-            {NAV_ITEMS.map(({ path, label, icon: Icon }) => {
-              const active = pathname === path
-              return (
-                <button
-                  key={path}
-                  onClick={() => navigate(path)}
-                  className={clsx(
-                    'flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all duration-200 w-full',
-                    active
-                      ? 'bg-nexus-primary/15 text-nexus-primary border border-nexus-primary/30 shadow-nexus-sm'
-                      : 'text-nexus-text-secondary hover:text-nexus-text-primary hover:bg-white/5'
-                  )}
-                  title={!sidebarExpanded ? label : undefined}
-                >
-                  <Icon className={clsx('shrink-0', active ? 'w-4 h-4' : 'w-4 h-4')} />
-                  {sidebarExpanded && (
-                    <span className="whitespace-nowrap overflow-hidden text-ellipsis">{label}</span>
-                  )}
-                  {active && !sidebarExpanded && (
-                    <span className="absolute left-0 w-0.5 h-5 bg-nexus-primary rounded-r-full" />
-                  )}
-                </button>
-              )
-            })}
-          </nav>
-
-          {/* Expand/collapse toggle */}
+          {NAV_ITEMS.map(({ path, label }) => {
+            const active = pathname === path
+            return (
+              <button
+                key={path}
+                onClick={() => navigate(path)}
+                className={clsx(
+                  'relative px-6 text-[11px] font-semibold tracking-[0.12em] transition-all duration-150 flex items-center uppercase',
+                  active ? 'text-[#00e8ca]' : 'text-[#708090] hover:text-[#b0cfd0]'
+                )}
+              >
+                {label}
+                {active && (
+                  <span
+                    className="absolute bottom-0 inset-x-0 h-[2px] bg-[#00e8ca]"
+                    style={{ boxShadow: '0 0 6px #00e8ca, 0 0 12px rgba(0,232,202,0.4)' }}
+                  />
+                )}
+              </button>
+            )
+          })}
+          <div className="flex-1" />
           <button
-            onClick={toggleSidebar}
-            className="m-2 p-2 rounded-xl text-nexus-text-muted hover:text-nexus-text-secondary hover:bg-white/5 transition-colors flex items-center justify-center"
+            onClick={() => navigate('/settings')}
+            className={clsx(
+              'px-4 flex items-center transition-all duration-150',
+              pathname === '/settings' ? 'text-[#00e8ca]' : 'text-[#708090] hover:text-[#b0cfd0]'
+            )}
           >
-            <ChevronLeft
-              className={clsx(
-                'w-4 h-4 transition-transform duration-300',
-                !sidebarExpanded && 'rotate-180'
-              )}
-            />
+            <Settings className="w-3.5 h-3.5" />
           </button>
-        </aside>
+        </nav>
 
-        {/* Main content */}
-        <main className="flex-1 overflow-hidden">{children}</main>
+        {/* Update banner */}
+        <UpdateBanner />
+
+        {/* Page content */}
+        <main className="flex-1 overflow-hidden relative">
+          {children}
+        </main>
       </div>
     </div>
   )
 }
+
