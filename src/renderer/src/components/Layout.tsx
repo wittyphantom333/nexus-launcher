@@ -1,7 +1,6 @@
 ﻿import { ReactNode } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { clsx } from 'clsx'
-import { Minus, X } from 'lucide-react'
 import BackgroundLayer from './BackgroundLayer'
 import UpdateBanner from './UpdateBanner'
 import ResizeHandles from './ResizeHandles'
@@ -46,22 +45,33 @@ export default function Layout({ children }: { children: ReactNode }) {
       />
 
       {/* Window controls — positioned independently to align with drawn dots */}
+      {/* Window controls — invisible circular hit targets directly over the drawn dots */}
       <button
         onClick={() => window.electron.minimize()}
-        className="group absolute z-30 w-6 h-6 rounded-full flex items-center justify-center transition-opacity"
-        style={{ top: '13vh', right: '9vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        className="absolute z-30 rounded-full transition-colors"
+        style={{
+          top: '13vh', right: '9vw',
+          width: 22, height: 22,
+          background: 'transparent', border: 'none', cursor: 'pointer',
+          WebkitAppRegion: 'no-drag',
+        } as React.CSSProperties}
+        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(60,180,255,0.25)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
         title="Minimize"
-      >
-        <Minus className="w-4 h-4 text-[#80b0d0] opacity-60 group-hover:opacity-100" />
-      </button>
+      />
       <button
         onClick={() => window.electron.close()}
-        className="group absolute z-30 w-6 h-6 rounded-full flex items-center justify-center transition-opacity"
-        style={{ top: '13.5vh', right: '7vw', background: 'transparent', border: 'none', cursor: 'pointer', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        className="absolute z-30 rounded-full transition-colors"
+        style={{
+          top: '13.5vh', right: '7vw',
+          width: 22, height: 22,
+          background: 'transparent', border: 'none', cursor: 'pointer',
+          WebkitAppRegion: 'no-drag',
+        } as React.CSSProperties}
+        onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,80,80,0.25)')}
+        onMouseLeave={e => (e.currentTarget.style.background = 'transparent')}
         title="Close"
-      >
-        <X className="w-4 h-4 text-[#e07070] opacity-60 group-hover:opacity-100" />
-      </button>
+      />
 
       {/* Nav items — rendered over the empty nav strip */}
       <nav
