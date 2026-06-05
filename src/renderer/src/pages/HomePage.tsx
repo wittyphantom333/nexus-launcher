@@ -34,16 +34,14 @@ export default function HomePage() {
     setNews,
   } = useStore()
 
-  // ── Fetch news from GitHub on mount ─────────────────────────────────────
+  // ── Fetch news directly in the renderer (same CSP as BackgroundLayer fetch) ──────
   useEffect(() => {
-    window.electron
-      .fetchNews(GITHUB_NEWS_URL)
-      .then(res => {
-        if (res.success && Array.isArray(res.data)) {
-          setNews(res.data as NewsItem[])
-        }
+    fetch(GITHUB_NEWS_URL)
+      .then(r => r.json())
+      .then((data: unknown) => {
+        if (Array.isArray(data)) setNews(data as NewsItem[])
       })
-      .catch(() => {/* silently ignore network errors */})
+      .catch(() => {})
   }, [])
 
   // ── Patcher events ───────────────────────────────────────────────────────
@@ -212,9 +210,18 @@ export default function HomePage() {
           height: '5.47vh',
           background: 'transparent',
           border: 'none',
+          zIndex: 30,
+          position: 'absolute',
         }}
       >
-        {/* Show spinner + state text only when busy — floats over the button */}
+        {/* Error text floats above the PLAY button so it's above the frame PNG */}
+        {isError && launchError && (
+          <span className="absolute left-1/2 -translate-x-1/2 whitespace-nowrap text-[#ff8060] font-bold text-[10px] tracking-widest"
+            style={{ bottom: '100%', marginBottom: '4px' }}>
+            {launchError}
+          </span>
+        )}
+        {/* Show spinner + state text only when busy */}
         {(isLaunching || isPatching) && (
           <span className="flex items-center justify-center gap-2 text-white font-black text-sm tracking-widest">
             <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
@@ -228,8 +235,8 @@ export default function HomePage() {
         )}
       </button>
 
-      {/* ── Server status + errors — bottom-left inside the launcher bar ── */}
-      <div className="absolute flex flex-col gap-0.5" style={{ left: '5vw', bottom: '8.5vh' }}>
+      {/* ── Server status — z:30 to render above the frame PNG ── */}
+      <div className="absolute flex flex-col gap-0.5" style={{ left: '5vw', bottom: '8.5vh', zIndex: 30 }}>
         {activeServer && (
           <div className="flex items-center gap-2 text-xs">
             <div className={clsx(
