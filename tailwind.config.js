@@ -1,7 +1,10 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: 'class',
-  content: ['./src/renderer/src/**/*.{js,jsx,ts,tsx}', './src/renderer/index.html'],
+  content: [
+    './src/renderer/index.html',
+    './src/renderer/src/**/*.{js,jsx,ts,tsx}'
+  ],
   theme: {
     extend: {
       colors: {
@@ -26,9 +29,9 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'system-ui', 'sans-serif'],
-        mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
-        display: ['Rajdhani', 'Inter', 'sans-serif']
+        sans: ['Segoe UI', 'system-ui', 'sans-serif'],
+        mono: ['Consolas', 'Fira Code', 'monospace'],
+        display: ['Segoe UI', 'system-ui', 'sans-serif']
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
