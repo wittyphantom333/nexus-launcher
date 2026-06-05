@@ -183,37 +183,35 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* ── PLAY button — centered, over the image's green capsule ───────── */}
+      {/* ── PLAY button — invisible click target over image's drawn PLAY capsule ── */}
       <button
         onClick={handleLaunch}
         disabled={buttonDisabled}
+        title={buttonLabel}
         className={clsx(
-          'absolute left-1/2 -translate-x-1/2 font-black text-[15px] tracking-[0.3em] text-white transition-all duration-150',
-          buttonDisabled ? 'opacity-50 cursor-not-allowed' : 'hover:brightness-110 active:scale-95'
+          'absolute left-1/2 -translate-x-1/2 transition-all duration-150',
+          buttonDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:brightness-125 active:scale-95'
         )}
         style={{
-          bottom: 135,
-          width: 276,
-          height: 48,
-          borderRadius: 3,
-          background: buttonDisabled
-            ? 'rgba(15,40,20,0.7)'
-            : isError
-            ? 'linear-gradient(180deg,#922020 0%,#4a0e0e 100%)'
-            : 'linear-gradient(180deg,#20a040 0%,#0d5020 100%)',
-          boxShadow: buttonDisabled
-            ? 'none'
-            : isError
-            ? '0 0 28px rgba(180,30,30,0.7), inset 0 1px 0 rgba(255,255,255,0.1)'
-            : '0 0 28px rgba(30,160,60,0.7), inset 0 1px 0 rgba(255,255,255,0.15)',
+          bottom: 214,
+          width: 320,
+          height: 54,
+          background: 'transparent',
+          border: 'none',
         }}
       >
-        <span className="flex items-center justify-center gap-2">
-          {(isLaunching || isPatching) && (
-            <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-          )}
-          {buttonLabel}
-        </span>
+        {/* Show spinner + state text only when busy — floats over the button */}
+        {(isLaunching || isPatching) && (
+          <span className="flex items-center justify-center gap-2 text-white font-black text-sm tracking-widest">
+            <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+            {buttonLabel}
+          </span>
+        )}
+        {isError && (
+          <span className="flex items-center justify-center text-[#ff6060] font-black text-xs tracking-widest">
+            {buttonLabel}
+          </span>
+        )}
       </button>
 
       {/* ── Server status + errors — bottom-left inside the launcher bar ── */}

@@ -26,7 +26,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const { pathname } = useLocation()
 
   return (
-    <div className="h-screen w-screen overflow-hidden relative" style={{ background: '#060b0a' }}>
+    <div className="h-screen w-screen overflow-hidden relative" style={{ background: 'transparent' }}>
 
       {/* The full-window launcher image */}
       <BackgroundLayer />
@@ -72,7 +72,6 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div style={{ width: 220 }} />
 
         {NAV_ITEMS.map(({ path, label }) => {
-          const active = pathname === path
           return (
             <button
               key={path}
@@ -81,16 +80,6 @@ export default function Layout({ children }: { children: ReactNode }) {
               className="relative flex-1 h-full cursor-pointer"
               style={{ background: 'transparent', border: 'none', maxWidth: 240 }}
             >
-              {/* Only the active glow is visible – the image provides the text */}
-              {active && (
-                <span
-                  className="absolute bottom-0 inset-x-[10%] h-[2px]"
-                  style={{
-                    background: '#00e8ca',
-                    boxShadow: '0 0 10px #00e8ca, 0 0 18px rgba(0,232,202,0.6)',
-                  }}
-                />
-              )}
             </button>
           )
         })}
