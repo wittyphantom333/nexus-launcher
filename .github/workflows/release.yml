@@ -7,6 +7,7 @@ on:
 
 permissions:
   contents: write
+  actions: read
 
 jobs:
   create-release:
@@ -25,11 +26,8 @@ jobs:
             ## Installation
 
             ### Windows
-            **Recommended:** Download the `.zip` file, extract it, and run `Nexus Launcher.exe` inside — no installation required, no SmartScreen prompt.
-
-            Alternatively, use the `.exe` installer. If Windows shows **"Windows protected your PC"**:
-            1. Click **"More info"**
-            2. Click **"Run anyway"**
+            Download the signed `.exe` installer — fully trusted, no SmartScreen warning.
+            Or download the `.zip`, extract it, and run `Nexus Launcher.exe` — no install needed.
 
             ### macOS
             Download the `.dmg`, open it, and drag the app to Applications.
@@ -39,19 +37,63 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-  release:
+  build-windows:
+    name: Build & Publish (windows-latest)
+    needs: create-release
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build & package
+        run: npm run build:win
+
+      - name: Upload unsigned installer for signing
+        id: upload-unsigned
+        uses: actions/upload-artifact@v4
+        with:
+          name: unsigned-windows-installer
+          path: dist/*.exe
+
+      - name: Sign installer via SignPath
+        uses: signpath/github-action-submit-signing-request@v2
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: '${{ secrets.SIGNPATH_ORGANIZATION_ID }}'
+          project-slug: 'nexus-launcher'
+          signing-policy-slug: 'release-signing'
+          github-artifact-id: '${{ steps.upload-unsigned.outputs.artifact-id }}'
+          wait-for-completion: true
+          output-artifact-directory: signed-dist/
+
+      - name: Upload signed installer + zip to release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            signed-dist/*.exe
+            dist/*.zip
+          fail_on_unmatched_files: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  build-other:
     name: Build & Publish (${{ matrix.os }})
     needs: create-release
     strategy:
       fail-fast: false
       matrix:
         include:
-          - os: windows-latest
-            build_cmd: npm run build:win
-            artifact_glob: |
-              dist/*.exe
-              dist/*.zip
-
           - os: macos-latest
             build_cmd: npm run build:mac
             artifact_glob: |
