@@ -36,6 +36,8 @@ export interface Settings {
   autoUpdate: boolean
   backgroundType: 'default' | 'image' | 'video'
   backgroundPath: string
+  backgroundImages: string[]
+  backgroundInterval: number
   accentColor: string
   closeToTray: boolean
   launchAndClose: boolean

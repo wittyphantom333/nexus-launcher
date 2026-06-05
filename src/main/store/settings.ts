@@ -10,6 +10,8 @@ export interface Settings {
   autoUpdate: boolean
   backgroundType: 'default' | 'image' | 'video'
   backgroundPath: string
+  backgroundImages: string[]
+  backgroundInterval: number
   accentColor: string
   closeToTray: boolean
   launchAndClose: boolean
@@ -40,6 +42,8 @@ const defaultSettings: Settings = {
   autoUpdate: true,
   backgroundType: 'default',
   backgroundPath: '',
+  backgroundImages: [],
+  backgroundInterval: 8,
   accentColor: '#00D4FF',
   closeToTray: false,
   launchAndClose: false
@@ -62,6 +66,8 @@ class SettingsStore {
         autoUpdate: { type: 'boolean' },
         backgroundType: { type: 'string', enum: ['default', 'image', 'video'] },
         backgroundPath: { type: 'string' },
+        backgroundImages: { type: 'array' },
+        backgroundInterval: { type: 'number' },
         accentColor: { type: 'string' },
         closeToTray: { type: 'boolean' },
         launchAndClose: { type: 'boolean' }

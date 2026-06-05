@@ -70,6 +70,8 @@ const defaultSettings: Settings = {
   autoUpdate: true,
   backgroundType: 'default',
   backgroundPath: '',
+  backgroundImages: [],
+  backgroundInterval: 8,
   accentColor: '#00D4FF',
   closeToTray: false,
   launchAndClose: false

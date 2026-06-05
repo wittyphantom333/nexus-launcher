@@ -36,13 +36,13 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Drag region: covers the WILDSTAR logo strip */}
       <div
         className="absolute inset-x-0 top-0 z-20"
-        style={{ height: 134, WebkitAppRegion: 'drag' } as React.CSSProperties}
+        style={{ height: '16.75vh', WebkitAppRegion: 'drag' } as React.CSSProperties}
       />
 
       {/* Window controls – absolutely over the image's control dots */}
       <div
         className="absolute z-30 flex items-center gap-1.5"
-        style={{ top: 143, left: 185, WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '17.875vh', left: '15.42vw', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
         <button
           onClick={() => window.electron.minimize()}
@@ -66,10 +66,10 @@ export default function Layout({ children }: { children: ReactNode }) {
           Active tab gets a teal underline glow that looks native to the image. */}
       <div
         className="absolute inset-x-0 z-30 flex items-stretch"
-        style={{ top: 134, height: 34, WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '16.75vh', height: '4.25vh', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
         {/* left spacer to align with image nav start */}
-        <div style={{ width: 220 }} />
+        <div style={{ width: '18.33vw' }} />
 
         {NAV_ITEMS.map(({ path, label }) => {
           return (
@@ -78,7 +78,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               onClick={() => navigate(path)}
               title={label}
               className="relative flex-1 h-full cursor-pointer"
-              style={{ background: 'transparent', border: 'none', maxWidth: 240 }}
+              style={{ background: 'transparent', border: 'none', maxWidth: '20vw' }}
             >
             </button>
           )
@@ -106,7 +106,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Page content */}
       <div
         className="absolute inset-x-0 bottom-0 z-10"
-        style={{ top: 168 }}
+        style={{ top: '21vh' }}
       >
         {children}
       </div>
