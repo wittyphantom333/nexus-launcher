@@ -98,6 +98,17 @@ export interface UpdateInfo {
 }
 
 // ─── Launcher ──────────────────────────────────────────────────────────────
+export interface LaunchResult {
+  success: boolean
+  error?: string
+}
+
+export interface ValidationResult {
+  valid: boolean
+  executable?: string
+  error?: string
+}
+
 export type LaunchState = 'idle' | 'checking' | 'patching' | 'launching' | 'running' | 'error'
 
 export type Page = 'home' | 'servers' | 'patch-notes' | 'settings'
