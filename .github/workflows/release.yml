@@ -25,15 +25,8 @@ jobs:
           body: |
             ## Installation
 
-            ### Windows
             Download the signed `.exe` installer — fully trusted, no SmartScreen warning.
             Or download the `.zip`, extract it, and run `Nexus Launcher.exe` — no install needed.
-
-            ### macOS
-            Download the `.dmg`, open it, and drag the app to Applications.
-
-            ### Linux
-            Download the `.AppImage`, make it executable (`chmod +x`), and run it.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -82,52 +75,6 @@ jobs:
           files: |
             signed-dist/*.exe
             dist/*.zip
-          fail_on_unmatched_files: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  build-other:
-    name: Build & Publish (${{ matrix.os }})
-    needs: create-release
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: macos-latest
-            build_cmd: npm run build:mac
-            artifact_glob: |
-              dist/*.dmg
-
-          - os: ubuntu-latest
-            build_cmd: npm run build:linux
-            artifact_glob: |
-              dist/*.AppImage
-              dist/*.deb
-
-    runs-on: ${{ matrix.os }}
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Setup Node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 24
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build & package
-        run: ${{ matrix.build_cmd }}
-
-      - name: Upload release artifacts
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          files: ${{ matrix.artifact_glob }}
           fail_on_unmatched_files: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
