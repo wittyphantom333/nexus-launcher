@@ -24,7 +24,6 @@ export default function HomePage() {
   const {
     settings,
     activeServer,
-    serverStatuses,
     launchState,
     launchError,
     setLaunchState,
@@ -59,8 +58,6 @@ export default function HomePage() {
     const offError = window.electron.onPatchError(err => { setPatchProgress(null); setLaunchState('error', err.message) })
     return () => { offProgress(); offComplete(); offError() }
   }, [])
-
-  const status = activeServer ? serverStatuses[activeServer.id] : undefined
 
   // ── Launch flow ──────────────────────────────────────────────────────────
   const handleLaunch = useCallback(async () => {
@@ -251,33 +248,6 @@ export default function HomePage() {
           </span>
         )}
       </button>
-
-      {/* ── Server status — z:30 to render above the frame PNG ── */}
-      <div className="absolute flex flex-col gap-0.5" style={{ left: 0, bottom: '8.5vh' }}>
-        {activeServer && (
-          <div className="flex items-center gap-2 text-xs">
-            <div className={clsx(
-              'w-1.5 h-1.5 rounded-full shrink-0',
-              status?.online ? 'bg-[#20c060] shadow-[0_0_4px_#20c060]' : 'bg-[#c03030]'
-            )} />
-            <span className="text-[#90c8a8] font-semibold">{activeServer.name}</span>
-            <span className="text-[#3a6050] font-mono text-[10px]">
-              {activeServer.host}:{activeServer.port}
-            </span>
-            {status?.playerCount !== undefined && (
-              <span className="text-[#2a5040] text-[10px]">
-                {status.playerCount.toLocaleString()} online
-              </span>
-            )}
-          </div>
-        )}
-        {isError && launchError && (
-          <p className="text-[#e05050] text-[10px] max-w-[320px]">{launchError}</p>
-        )}
-        {!settings.gamePath && (
-          <p className="text-[#c89020] text-[10px]">Set game path in Settings ⚙</p>
-        )}
-      </div>
     </div>
   )
 }

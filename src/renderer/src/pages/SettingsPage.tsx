@@ -1,14 +1,13 @@
 ﻿import { useState, useEffect } from 'react'
 import { clsx } from 'clsx'
-import { FolderOpen, Monitor, Gamepad2, Palette, Save, Check } from 'lucide-react'
+import { FolderOpen, Monitor, Gamepad2, Save, Check } from 'lucide-react'
 import { useStore } from '../store'
 import type { Settings as SettingsType } from '../types'
 
-type Tab = 'general' | 'appearance' | 'game' | 'about'
+type Tab = 'general' | 'game' | 'about'
 
 const TABS: { id: Tab; label: string }[] = [
   { id: 'general', label: 'General' },
-  { id: 'appearance', label: 'Appearance' },
   { id: 'game', label: 'Game' },
   { id: 'about', label: 'About' },
 ]
@@ -31,16 +30,6 @@ export default function SettingsPage() {
     const result = await window.electron.validateGamePath(p)
     if (result.valid) { set('gamePath', p); setPathError(null) }
     else setPathError(result.error ?? 'Invalid path')
-  }
-
-  const handleBrowseBackground = async () => {
-    const p = await window.electron.browseFile([
-      { name: 'Images', extensions: ['png', 'jpg', 'jpeg', 'webp'] },
-      { name: 'Videos', extensions: ['mp4', 'webm'] },
-    ])
-    if (!p) return
-    const isVideo = /\.(mp4|webm)$/i.test(p)
-    setForm(prev => ({ ...prev, backgroundPath: p, backgroundType: isVideo ? 'video' : 'image' }))
   }
 
   const handleAutoDetect = async () => {
@@ -131,54 +120,6 @@ export default function SettingsPage() {
               <Toggle label="Auto-update launcher" checked={form.autoUpdate ?? true} onChange={v => set('autoUpdate', v)} />
             </Group>
           </>
-        )}
-
-        {tab === 'appearance' && (
-          <Group title="Background" icon={Palette}>
-            <Field label="Background Type">
-              <WsSelect
-                value={form.backgroundType ?? 'default'}
-                onChange={v => set('backgroundType', v as SettingsType['backgroundType'])}
-                options={['default', 'image', 'video']}
-              />
-            </Field>
-            {(form.backgroundType === 'image' || form.backgroundType === 'video') && (
-              <Field label="Background File">
-                <div className="flex gap-2">
-                  <input className="nexus-input flex-1 truncate" readOnly value={form.backgroundPath ?? ''} placeholder="No file selected" />
-                  <button onClick={handleBrowseBackground} className="btn-ghost py-2 px-3 shrink-0 text-xs">Browse</button>
-                </div>
-              </Field>
-            )}
-
-            <Field label="Slideshow">
-              <p className="text-[#2a6050] text-[11px] leading-relaxed">
-                Background slides are managed via{' '}
-                <button
-                  onClick={() => window.electron.openExternal('https://github.com/wittyphantom333/nexus-launcher/blob/main/slides.json')}
-                  className="text-[#40ead0] hover:opacity-80"
-                >
-                  slides.json
-                </button>{' '}
-                on GitHub. Add image URLs there to update backgrounds without a new release.
-              </p>
-            </Field>
-            <Field label="Accent Color">
-              <div className="flex items-center gap-3">
-                <input
-                  type="color"
-                  value={form.accentColor ?? '#00D4FF'}
-                  onChange={e => set('accentColor', e.target.value)}
-                  className="w-9 h-9 rounded border border-nexus-border bg-nexus-surface cursor-pointer"
-                />
-                <input
-                  className="nexus-input flex-1 font-mono uppercase"
-                  value={form.accentColor ?? '#00D4FF'}
-                  onChange={e => set('accentColor', e.target.value)}
-                />
-              </div>
-            </Field>
-          </Group>
         )}
 
         {tab === 'game' && (
