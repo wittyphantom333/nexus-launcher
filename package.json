@@ -1,6 +1,6 @@
 {
   "name": "nexus-launcher",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Modern launcher for NexusForever – the WildStar private server emulator",
   "main": "./out/main/index.js",
   "homepage": "https://github.com/wittyphantom333/nexus-launcher",
@@ -119,13 +119,15 @@
       "artifactName": "Nexus-Launcher-${version}.${ext}"
     },
     "nsis": {
-      "oneClick": false,
+      "oneClick": true,
       "perMachine": false,
-      "allowToChangeInstallationDirectory": true,
+      "allowToChangeInstallationDirectory": false,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "Nexus Launcher",
-      "artifactName": "Nexus-Launcher-Setup-${version}.${ext}"
+      "artifactName": "Nexus-Launcher-Setup-${version}.${ext}",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false
     },
     "publish": {
       "provider": "github",

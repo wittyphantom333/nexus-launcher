@@ -18,5 +18,12 @@
     "title": "Getting Started",
     "summary": "1. Add your server in the Community tab.\n2. Set your WildStar game path in Settings.\n3. Click PLAY — the launcher will connect you automatically.",
     "date": "2026-05-28T00:00:00Z"
+  },
+  {
+    "id": "4",
+    "title": "More Information",
+    "summary": "For more details, visit the official NexusForever GitHub repository or join the community forums.",
+    "url": "https://github.com/NexusForever/NexusForever",
+    "date": "2026-05-25T00:00:00Z"
   }
 ]

@@ -17,7 +17,7 @@ export default function ServersPage() {
   return (
     <div
       className="flex flex-col overflow-hidden p-5"
-      style={{ background: '#0a1614', height: 'calc(100% - 18vh)' }}
+      style={{ background: '#0a1614', height: '100%' }}
     >
       {/* Header */}
       <div className="flex items-center justify-between mb-4 shrink-0">
