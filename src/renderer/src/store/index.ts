@@ -74,7 +74,8 @@ const defaultSettings: Settings = {
   backgroundInterval: 8,
   accentColor: '#00D4FF',
   closeToTray: false,
-  launchAndClose: false
+  launchAndClose: false,
+  minimizeOnLaunch: false
 }
 
 export const useStore = create<LauncherStore>()(

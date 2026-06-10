@@ -93,6 +93,7 @@ export default function HomePage() {
     )
     if (result.success) {
       if (settings.launchAndClose) window.electron.close()
+      else if (settings.minimizeOnLaunch) { window.electron.minimize(); setLaunchState('idle') }
       else setLaunchState('idle')
       if (settings.discordRPC) window.electron.updateDiscord({ details: `Playing on ${activeServer.name}`, state: 'In-game' })
     } else {

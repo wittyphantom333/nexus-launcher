@@ -15,6 +15,7 @@ export interface Settings {
   accentColor: string
   closeToTray: boolean
   launchAndClose: boolean
+  minimizeOnLaunch: boolean
 }
 
 export interface ServerProfile {
@@ -46,7 +47,8 @@ const defaultSettings: Settings = {
   backgroundInterval: 8,
   accentColor: '#00D4FF',
   closeToTray: false,
-  launchAndClose: false
+  launchAndClose: false,
+  minimizeOnLaunch: false
 }
 
 class SettingsStore {
@@ -70,7 +72,8 @@ class SettingsStore {
         backgroundInterval: { type: 'number' },
         accentColor: { type: 'string' },
         closeToTray: { type: 'boolean' },
-        launchAndClose: { type: 'boolean' }
+        launchAndClose: { type: 'boolean' },
+        minimizeOnLaunch: { type: 'boolean' }
       }
     })
   }

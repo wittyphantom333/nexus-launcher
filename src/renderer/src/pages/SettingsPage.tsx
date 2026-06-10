@@ -1,20 +1,11 @@
 ﻿import { useState, useEffect } from 'react'
 import { clsx } from 'clsx'
-import { FolderOpen, Monitor, Gamepad2, Save, Check } from 'lucide-react'
+import { FolderOpen, Monitor, Gamepad2, Save, Check, Info } from 'lucide-react'
 import { useStore } from '../store'
 import type { Settings as SettingsType } from '../types'
 
-type Tab = 'general' | 'game' | 'about'
-
-const TABS: { id: Tab; label: string }[] = [
-  { id: 'general', label: 'General' },
-  { id: 'game', label: 'Game' },
-  { id: 'about', label: 'About' },
-]
-
 export default function SettingsPage() {
   const { settings, updateSettings } = useStore()
-  const [tab, setTab] = useState<Tab>('general')
   const [form, setForm] = useState<Partial<SettingsType>>({})
   const [saved, setSaved] = useState(false)
   const [pathError, setPathError] = useState<string | null>(null)
@@ -51,100 +42,70 @@ export default function SettingsPage() {
       className="flex flex-col"
       style={{ background: '#0a1614', height: 'calc(100% - 14vh)' }}
     >
-      {/* Tab strip */}
-      <div
-        className="shrink-0 flex items-center gap-1 px-6 pt-4 pb-0"
-        style={{ borderBottom: '1px solid rgba(0,160,140,0.25)' }}
-      >
-        {TABS.map(t => (
-          <button
-            key={t.id}
-            onClick={() => setTab(t.id)}
-            className={clsx(
-              'px-5 py-2 text-[11px] font-bold tracking-[0.15em] uppercase transition-colors relative',
-              tab === t.id ? 'text-[#40ead0]' : 'text-[#3a6070] hover:text-[#80c0b8]'
-            )}
-          >
-            {t.label}
-            {tab === t.id && (
-              <span
-                className="absolute bottom-0 inset-x-0 h-[2px]"
-                style={{ background: '#00e8ca', boxShadow: '0 0 8px #00e8ca' }}
-              />
-            )}
-          </button>
-        ))}
-      </div>
-
-      {/* Scrollable content */}
+      {/* Single scrollable content (no tabs) */}
       <div className="flex-1 overflow-y-auto px-6 py-5 space-y-5">
 
-        {tab === 'general' && (
-          <>
-            <Group title="Game Installation" icon={FolderOpen}>
-              <Field label="Game Path">
-                <div className="flex gap-2">
-                  <input
-                    className="nexus-input flex-1"
-                    placeholder="Select WildStar installation folder"
-                    value={form.gamePath ?? ''}
-                    onChange={e => set('gamePath', e.target.value)}
-                  />
-                  <button onClick={handleBrowseGamePath} className="btn-ghost py-2 px-3 shrink-0 text-xs">
-                    Browse
-                  </button>
-                </div>
-                {pathError && <p className="text-nexus-error text-xs mt-1">{pathError}</p>}
-                <button onClick={handleAutoDetect} className="text-nexus-primary text-xs mt-1 hover:opacity-80">
-                  Auto-detect from registry
-                </button>
-              </Field>
-              <Field label="Language">
-                <WsSelect
-                  value={form.language ?? 'English'}
-                  onChange={v => set('language', v as SettingsType['language'])}
-                  options={['English', 'French', 'German']}
-                />
-              </Field>
-              <Field label="Architecture">
-                <WsSelect
-                  value={form.architecture ?? '64bit'}
-                  onChange={v => set('architecture', v as SettingsType['architecture'])}
-                  options={['64bit', '32bit']}
-                />
-              </Field>
-            </Group>
-
-            <Group title="Behaviour" icon={Gamepad2}>
-              <Toggle label="Close launcher after game starts" checked={form.launchAndClose ?? false} onChange={v => set('launchAndClose', v)} />
-              <Toggle label="Minimize to tray on close" checked={form.closeToTray ?? false} onChange={v => set('closeToTray', v)} />
-              <Toggle label="Auto-update launcher" checked={form.autoUpdate ?? true} onChange={v => set('autoUpdate', v)} />
-            </Group>
-          </>
-        )}
-
-        {tab === 'game' && (
-          <Group title="Integrations" icon={Monitor}>
-            <Toggle
-              label="Discord Rich Presence"
-              description="Show current server in Discord status"
-              checked={form.discordRPC ?? true}
-              onChange={v => set('discordRPC', v)}
+        <Group title="Game Installation" icon={FolderOpen}>
+          <Field label="Game Path">
+            <div className="flex gap-2">
+              <input
+                className="nexus-input flex-1"
+                placeholder="Select WildStar installation folder"
+                value={form.gamePath ?? ''}
+                onChange={e => set('gamePath', e.target.value)}
+              />
+              <button onClick={handleBrowseGamePath} className="btn-ghost py-2 px-3 shrink-0 text-xs">
+                Browse
+              </button>
+            </div>
+            {pathError && <p className="text-nexus-error text-xs mt-1">{pathError}</p>}
+            <button onClick={handleAutoDetect} className="text-nexus-primary text-xs mt-1 hover:opacity-80">
+              Auto-detect from registry
+            </button>
+          </Field>
+          <Field label="Language">
+            <WsSelect
+              value={form.language ?? 'English'}
+              onChange={v => set('language', v as SettingsType['language'])}
+              options={['English', 'French', 'German']}
             />
-          </Group>
-        )}
+          </Field>
+          <Field label="Architecture">
+            <WsSelect
+              value={form.architecture ?? '64bit'}
+              onChange={v => set('architecture', v as SettingsType['architecture'])}
+              options={['64bit', '32bit']}
+            />
+          </Field>
+        </Group>
 
-        {tab === 'about' && (
-          <div className="space-y-3 pt-2">
-            <p className="text-[#40ead0] font-bold text-lg tracking-wide">Nexus Launcher</p>
-            <p className="text-[#5a9080] text-sm leading-relaxed">
+        <Group title="Behaviour" icon={Gamepad2}>
+          <Toggle label="Close launcher after game starts" checked={form.launchAndClose ?? false} onChange={v => set('launchAndClose', v)} />
+          <Toggle label="Minimize launcher when game starts" checked={form.minimizeOnLaunch ?? false} onChange={v => set('minimizeOnLaunch', v)} />
+          <Toggle label="Minimize to tray on close" checked={form.closeToTray ?? false} onChange={v => set('closeToTray', v)} />
+          <Toggle label="Auto-update launcher" checked={form.autoUpdate ?? true} onChange={v => set('autoUpdate', v)} />
+        </Group>
+
+        <Group title="Integrations" icon={Monitor}>
+          <Toggle
+            label="Discord Rich Presence"
+            description="Show current server in Discord status"
+            checked={form.discordRPC ?? true}
+            onChange={v => set('discordRPC', v)}
+          />
+        </Group>
+
+        <Group title="About" icon={Info}>
+          <div className="space-y-2">
+            <p className="text-[#40ead0] font-bold text-base tracking-wide">Nexus Launcher</p>
+            <p className="text-[#5a9080] text-xs leading-relaxed">
               A modern launcher for the NexusForever WildStar private server emulator.
             </p>
-            <div className="space-y-1 text-xs text-[#3a6050] font-mono">
+            <div className="space-y-1 text-[10px] text-[#3a6050] font-mono">
               <p>Built with Electron + React + TypeScript</p>
               <p>Licensed under AGPL-3.0</p>
             </div>
-            <div className="flex items-center gap-4 pt-2">
+            <div className="flex items-center gap-4 pt-1">
               <button
                 onClick={() => window.electron.openExternal('https://github.com/wittyphantom333/nexus-launcher')}
                 className="text-[#40ead0] text-xs hover:opacity-80 transition-opacity"
@@ -170,7 +131,8 @@ export default function SettingsPage() {
               )}
             </div>
           </div>
-        )}
+        </Group>
+
       </div>
 
       {/* Save bar */}

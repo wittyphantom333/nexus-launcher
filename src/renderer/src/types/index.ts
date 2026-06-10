@@ -41,6 +41,7 @@ export interface Settings {
   accentColor: string
   closeToTray: boolean
   launchAndClose: boolean
+  minimizeOnLaunch: boolean
 }
 
 // ─── Patcher ───────────────────────────────────────────────────────────────
