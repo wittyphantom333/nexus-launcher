@@ -74,6 +74,11 @@ function setupAutoUpdater(): void {
   autoUpdater.logger = null
   autoUpdater.autoDownload = false
 
+  // Track whether the user is actively interacting with the updater.
+  // Background errors (e.g. missing latest.yml on initial check) are silently
+  // swallowed; only errors during a user-initiated download surface as modals.
+  let userInitiated = false
+
   autoUpdater.on('update-available', info => {
     mainWindow?.webContents.send('update:available', info)
   })
@@ -84,37 +89,54 @@ function setupAutoUpdater(): void {
     mainWindow?.webContents.send('update:downloading', progress.percent)
   })
   autoUpdater.on('update-downloaded', () => {
+    userInitiated = false
     mainWindow?.webContents.send('update:ready')
   })
   autoUpdater.on('error', err => {
     console.error('AutoUpdater error:', err)
-    mainWindow?.webContents.send('update:error', err.message)
+    // Suppress noisy errors when no release manifest is published yet
+    // (missing latest.yml, 404 on releases, network blips during background poll).
+    const msg = err?.message ?? ''
+    const isManifestMissing =
+      /latest\.yml/i.test(msg) || /404/.test(msg) || /Cannot find/i.test(msg)
+    if (userInitiated || !isManifestMissing) {
+      mainWindow?.webContents.send('update:error', msg || 'Update check failed')
+    }
+    userInitiated = false
   })
 
-  // Check for updates 5s after startup (non-dev only)
+  // Mark user-initiated checks/downloads so errors surface to the UI
+  ipcMain.handle('update:check', async () => {
+    if (is.dev) return { dev: true }
+    userInitiated = true
+    try {
+      const result = await autoUpdater.checkForUpdates()
+      userInitiated = false
+      return { ok: true, version: result?.updateInfo.version ?? null }
+    } catch (e) {
+      userInitiated = false
+      return { ok: false, error: e instanceof Error ? e.message : String(e) }
+    }
+  })
+
+  ipcMain.on('update:download', () => {
+    userInitiated = true
+    autoUpdater.downloadUpdate().catch(err => {
+      console.error('downloadUpdate failed:', err)
+      mainWindow?.webContents.send('update:error', err.message)
+      userInitiated = false
+    })
+  })
+
+  // Background check 5s after startup (non-dev only)
   if (!is.dev) {
-    setTimeout(() => autoUpdater.checkForUpdates(), 5000)
+    setTimeout(() => {
+      autoUpdater.checkForUpdates().catch(err => {
+        console.warn('Background update check failed (silently ignored):', err.message)
+      })
+    }, 5000)
   }
 }
-
-// IPC: manual check for updates
-ipcMain.handle('update:check', async () => {
-  if (is.dev) return { dev: true }
-  try {
-    const result = await autoUpdater.checkForUpdates()
-    return { ok: true, version: result?.updateInfo.version ?? null }
-  } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : String(e) }
-  }
-})
-
-// IPC: trigger download of an available update
-ipcMain.on('update:download', () => {
-  autoUpdater.downloadUpdate().catch(err => {
-    console.error('downloadUpdate failed:', err)
-    mainWindow?.webContents.send('update:error', err.message)
-  })
-})
 
 // IPC: install update (quit + apply)
 ipcMain.on('update:install', () => {

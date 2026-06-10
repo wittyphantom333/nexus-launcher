@@ -51,41 +51,7 @@ jobs:
       - name: Build & package
         run: npm run build:win
 
-      - name: Upload unsigned installer for signing
-        id: upload-unsigned
-        uses: actions/upload-artifact@v4
-        with:
-          name: unsigned-windows-installer
-          path: dist/*.exe
-      - name: Sign installer via SignPath
-        id: signpath
-        continue-on-error: true
-        uses: signpath/github-action-submit-signing-request@v2
-        with:
-          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
-          organization-id: '${{ secrets.SIGNPATH_ORGANIZATION_ID }}'
-          project-slug: 'nexus-launcher'
-          signing-policy-slug: 'nexus-launcher'
-          github-artifact-id: '${{ steps.upload-unsigned.outputs.artifact-id }}'
-          wait-for-completion: true
-          output-artifact-directory: signed-dist/
-
-      - name: Upload signed installer + zip to release
-        if: steps.signpath.outcome == 'success'
-        uses: softprops/action-gh-release@v2
-        with:
-          tag_name: ${{ github.ref_name }}
-          files: |
-            signed-dist/*.exe
-            dist/*.zip
-            dist/latest.yml
-            dist/*.blockmap
-          fail_on_unmatched_files: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Upload UNSIGNED installer (signing failed)
-        if: steps.signpath.outcome != 'success'
+      - name: Upload installer + zip to release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
