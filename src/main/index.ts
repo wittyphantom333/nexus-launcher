@@ -40,7 +40,7 @@ function createWindow(): void {
   mainWindow.once('ready-to-show', () => {
     mainWindow?.show()
     // Open DevTools for debugging (remove once issue is resolved)
-    mainWindow?.webContents.openDevTools({ mode: 'detach' })
+    // mainWindow?.webContents.openDevTools({ mode: 'detach' })
   })
 
   // Open external links in default browser
