@@ -58,6 +58,8 @@ jobs:
           name: unsigned-windows-installer
           path: dist/*.exe
       - name: Sign installer via SignPath
+        id: signpath
+        continue-on-error: true
         uses: signpath/github-action-submit-signing-request@v2
         with:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
@@ -69,11 +71,24 @@ jobs:
           output-artifact-directory: signed-dist/
 
       - name: Upload signed installer + zip to release
+        if: steps.signpath.outcome == 'success'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
           files: |
             signed-dist/*.exe
+            dist/*.zip
+          fail_on_unmatched_files: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload UNSIGNED installer (signing failed)
+        if: steps.signpath.outcome != 'success'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          files: |
+            dist/*.exe
             dist/*.zip
           fail_on_unmatched_files: false
         env:
