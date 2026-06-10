@@ -1,5 +1,7 @@
 # Nexus Launcher
 
+[![Release](https://github.com/wittyphantom333/nexus-launcher/actions/workflows/release.yml/badge.svg)](https://github.com/wittyphantom333/nexus-launcher/actions/workflows/release.yml)
+
 > A modern, feature-rich launcher for the [NexusForever](https://github.com/NexusForever) WildStar private server emulator.
 
 Built with **Electron + React + TypeScript + Vite** for a polished, game-grade experience.
