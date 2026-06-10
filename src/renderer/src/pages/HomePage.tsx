@@ -156,7 +156,6 @@ export default function HomePage() {
           }}
         >
           <div className="space-y-5">
-        <div className="space-y-5">
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
               No news yet
