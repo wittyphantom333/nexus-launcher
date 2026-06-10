@@ -240,6 +240,9 @@ export default function HomePage() {
           border: 'none',
           position: 'absolute',
           zIndex: 30,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         {/* Error text floats above the PLAY button so it's above the frame PNG */}
