@@ -1,6 +1,6 @@
 {
   "name": "nexus-launcher",
-  "version": "1.0.20",
+  "version": "1.0.21",
   "description": "Modern launcher for NexusForever – the WildStar private server emulator",
   "main": "./out/main/index.js",
   "homepage": "https://github.com/wittyphantom333/nexus-launcher",

@@ -90,9 +90,9 @@ export default function PlayButton() {
         buttonDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:brightness-125 active:scale-95'
       )}
       style={{
-        bottom: '12.5vh',
-        width: '15vw',
-        height: '4.5vh',
+        bottom: '11vh',
+        width: '16vw',
+        height: '5vh',
         background: 'transparent',
         border: 'none',
         position: 'absolute',
@@ -114,15 +114,15 @@ export default function PlayButton() {
       {(isLaunching || isPatching) ? (
         <span
           className="flex items-center justify-center gap-2 text-white"
-          style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: 900, fontSize: '0.95rem', letterSpacing: '0.2em' }}
+          style={{ fontFamily: "'Russo One', sans-serif", fontSize: '1.3rem', letterSpacing: '0.15em' }}
         >
-          <span className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+          <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
           {buttonLabel}
         </span>
       ) : isError ? (
         <span
           className="flex items-center justify-center text-[#ff6060]"
-          style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: 900, fontSize: '1rem', letterSpacing: '0.25em' }}
+          style={{ fontFamily: "'Russo One', sans-serif", fontSize: '1.4rem', letterSpacing: '0.2em' }}
         >
           {buttonLabel}
         </span>
@@ -130,11 +130,10 @@ export default function PlayButton() {
         <span
           className="flex items-center justify-center text-white"
           style={{
-            fontFamily: "'Orbitron', sans-serif",
-            fontWeight: 900,
-            fontSize: '1.1rem',
-            letterSpacing: '0.3em',
-            textShadow: '0 0 12px rgba(0,232,202,0.9), 0 2px 4px rgba(0,0,0,0.95)',
+            fontFamily: "'Russo One', sans-serif",
+            fontSize: '1.7rem',
+            letterSpacing: '0.22em',
+            textShadow: '0 0 14px rgba(0,232,202,0.95), 0 2px 4px rgba(0,0,0,0.95)',
           }}
         >
           {buttonLabel}
