@@ -3,6 +3,7 @@ import { clsx } from 'clsx'
 import { useStore } from '../store'
 import ContentSlider from '../components/ContentSlider'
 import type { NewsItem, PatchProgress } from '../types'
+import newsCardBg from '../assets/news-card.png'
 
 /**
  * GitHub raw URL for the news feed.
@@ -116,26 +117,45 @@ export default function HomePage() {
       {/* ── Background image slider (fills left content area) ── */}
       <ContentSlider slides={SLIDES} interval={7} />
 
-      {/* NEWS panel — z:30 above frame, with internal padding for clean alignment */}
+      {/* NEWS card — news.png background + scrollable content overlay */}
       <div
-        className="news-scroll"
         style={{
           position: 'absolute',
-          right: '1.5vw',
-          top: '11vh',
-          width: '27.5vw',
+          right: '4vw',
+          top: '2vh',
+          width: '24vw',
           bottom: '18vh',
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          paddingLeft: '2.5vw',
-          paddingRight: '1vw',
-          paddingBottom: '2vh',
-          paddingTop: '3vh',
-          scrollbarWidth: 'thin',
-          scrollbarColor: 'rgba(0,200,176,0.4) transparent',
           zIndex: 30,
         }}
       >
+        {/* Card background image */}
+        <img
+          src={newsCardBg}
+          alt=""
+          draggable={false}
+          className="absolute inset-0 w-full h-full select-none pointer-events-none"
+          style={{ objectFit: 'fill' }}
+        />
+
+        {/* Scrollable content overlay positioned below drawn NEWS header */}
+        <div
+          className="news-scroll absolute"
+          style={{
+            top: '11%',
+            left: 0,
+            right: 0,
+            bottom: '3%',
+            overflowY: 'auto',
+            overflowX: 'hidden',
+            paddingLeft: '1.5vw',
+            paddingRight: '1vw',
+            paddingTop: '1.5vh',
+            paddingBottom: '1vh',
+            scrollbarWidth: 'thin',
+            scrollbarColor: 'rgba(0,200,176,0.4) transparent',
+          }}
+        >
+          <div className="space-y-5">
         <div className="space-y-5">
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
@@ -169,6 +189,7 @@ export default function HomePage() {
               </p>
             </div>
           ))}
+          </div>
         </div>
       </div>
 
