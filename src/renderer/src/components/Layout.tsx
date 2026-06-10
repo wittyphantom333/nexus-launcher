@@ -4,6 +4,7 @@ import { clsx } from 'clsx'
 import BackgroundLayer from './BackgroundLayer'
 import UpdateBanner from './UpdateBanner'
 import ResizeHandles from './ResizeHandles'
+import PlayButton from './PlayButton'
 import launcherBg from '../assets/launcher-bg.png'
 
 /*
@@ -128,6 +129,9 @@ export default function Layout({ children }: { children: ReactNode }) {
         className="absolute inset-0 w-full h-full select-none pointer-events-none"
         style={{ objectFit: 'fill', zIndex: 20 }}
       />
+
+      {/* Global PLAY button — always visible across all routes */}
+      <PlayButton />
     </div>
   )
 }
