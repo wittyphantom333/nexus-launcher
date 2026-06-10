@@ -211,7 +211,7 @@ export default function HomePage() {
           buttonDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:brightness-125 active:scale-95'
         )}
         style={{
-          bottom: '8vh',
+          bottom: '10.5vh',
           width: '20vw',
           height: '7vh',
           background: 'transparent',

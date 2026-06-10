@@ -33,7 +33,7 @@ export default function PatchNotesPage() {
   return (
     <div
       className="flex flex-col overflow-hidden"
-      style={{ background: '#0a1614', height: 'calc(100% - 13vh)' }}
+      style={{ background: '#0a1614', height: 'calc(100% - 18vh)' }}
     >
       {/* Header */}
       <div className="flex items-center gap-2 px-5 py-3 border-b border-nexus-border shrink-0">
