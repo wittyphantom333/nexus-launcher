@@ -109,12 +109,12 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       <UpdateBanner />
 
-      {/* Page content — z:15 (BELOW frame PNG at z:20) so the frame chrome
-          decoratively overlaps pages instead of pages covering the chrome.
-          HomePage overlays (PLAY, NEWS) opt into z:30 individually to render above. */}
+      {/* Page content — no z-index so we don't create a stacking context.
+          Frame PNG (z:20, painted after) naturally covers pages by paint order.
+          HomePage overlays (PLAY, NEWS) opt into z:30 to render above frame. */}
       <div
         className="absolute bottom-0"
-        style={{ top: '16vh', left: '6.5vw', right: '6.5vw', zIndex: 15 }}
+        style={{ top: '16vh', left: '6.5vw', right: '6.5vw' }}
       >
         {children}
       </div>

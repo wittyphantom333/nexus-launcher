@@ -121,7 +121,7 @@ export default function HomePage() {
       <div
         style={{
           position: 'absolute',
-          right: '3vw',
+          right: '1vw',
           top: '3vh',
           width: '22vw',
           bottom: '20vh',
