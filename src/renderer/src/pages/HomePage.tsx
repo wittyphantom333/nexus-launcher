@@ -116,33 +116,25 @@ export default function HomePage() {
       {/* ── Background image slider (fills left content area) ── */}
       <ContentSlider slides={SLIDES} interval={7} />
 
-      {/* NEWS panel — outer clip prevents items showing above drawn header.
-          pointer-events: none on outer + auto on inner = wheel events reach scroll target. */}
+      {/* NEWS panel — single scrollable div positioned below drawn header */}
       <div
+        className="news-scroll"
         style={{
           position: 'absolute',
           right: '1vw',
           top: '11vh',
           width: '28vw',
           bottom: '14vh',
-          overflow: 'hidden',
-          pointerEvents: 'none',
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          paddingLeft: '2.5vw',
+          paddingRight: '0.5vw',
+          paddingBottom: '1vh',
+          paddingTop: '0.5vh',
+          scrollbarWidth: 'thin',
         }}
       >
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            overflowY: 'auto',
-            overflowX: 'hidden',
-            paddingLeft: '2.5vw',
-            paddingRight: '0.5vw',
-            paddingBottom: '1vh',
-            paddingTop: '0.5vh',
-            pointerEvents: 'auto',
-          }}
-        >
-          <div className="space-y-5">
+        <div className="space-y-5">
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
               No news yet
@@ -175,7 +167,6 @@ export default function HomePage() {
               </p>
             </div>
           ))}
-          </div>
         </div>
       </div>
 
@@ -220,9 +211,9 @@ export default function HomePage() {
           buttonDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:brightness-125 active:scale-95'
         )}
         style={{
-          bottom: '12.7vh',
-          width: '16.93vw',
-          height: '5.47vh',
+          bottom: '8vh',
+          width: '20vw',
+          height: '7vh',
           background: 'transparent',
           border: 'none',
           position: 'absolute',
@@ -235,20 +226,32 @@ export default function HomePage() {
             {launchError}
           </span>
         )}
-        {/* Idle / busy / error: always show the label text on the drawn capsule */}
+        {/* Idle / busy / error label */}
         {(isLaunching || isPatching) ? (
-          <span className="flex items-center justify-center gap-2 text-white font-black text-base tracking-[0.2em]">
-            <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+          <span
+            className="flex items-center justify-center gap-2 text-white"
+            style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: 900, fontSize: '1.5rem', letterSpacing: '0.25em' }}
+          >
+            <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
             {buttonLabel}
           </span>
         ) : isError ? (
-          <span className="flex items-center justify-center text-[#ff6060] font-black text-sm tracking-[0.2em]">
+          <span
+            className="flex items-center justify-center text-[#ff6060]"
+            style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: 900, fontSize: '1.5rem', letterSpacing: '0.25em' }}
+          >
             {buttonLabel}
           </span>
         ) : (
           <span
-            className="flex items-center justify-center text-white font-black text-base tracking-[0.25em]"
-            style={{ textShadow: '0 0 10px rgba(0,232,202,0.6), 0 1px 2px rgba(0,0,0,0.8)' }}
+            className="flex items-center justify-center text-white"
+            style={{
+              fontFamily: "'Orbitron', sans-serif",
+              fontWeight: 900,
+              fontSize: '1.75rem',
+              letterSpacing: '0.3em',
+              textShadow: '0 0 12px rgba(0,232,202,0.7), 0 2px 4px rgba(0,0,0,0.9)',
+            }}
           >
             {buttonLabel}
           </span>

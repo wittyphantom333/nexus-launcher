@@ -75,7 +75,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 
       {/* Nav items — rendered over the empty nav strip */}
       <nav
-        className="absolute inset-x-0 z-30 flex items-stretch"
+        className="absolute inset-x-0 z-30 flex items-end"
         style={{ top: '11.5vh', height: '5vh', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
         {/* left spacer — clears the window control dots */}
@@ -88,7 +88,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               key={path}
               onClick={() => navigate(path)}
               className={clsx(
-                'relative flex-1 h-full text-[11px] font-bold tracking-[0.18em] uppercase transition-colors duration-150',
+                'relative flex-1 text-[11px] font-bold tracking-[0.18em] uppercase transition-colors duration-150 pb-[6px]',
                 active ? 'text-[#40ead0]' : 'text-[#5a9a8a] hover:text-[#70c0b0]'
               )}
               style={{ background: 'transparent', border: 'none', maxWidth: '18vw', cursor: 'pointer' }}
@@ -96,7 +96,7 @@ export default function Layout({ children }: { children: ReactNode }) {
               {label}
               {active && (
                 <span
-                  className="absolute bottom-[3px] inset-x-[15%] h-[2px]"
+                  className="absolute bottom-0 inset-x-[15%] h-[2px]"
                   style={{ background: '#00e8ca', boxShadow: '0 0 8px #00e8ca, 0 0 14px rgba(0,232,202,0.5)' }}
                 />
               )}
