@@ -57,7 +57,7 @@ export default function BackgroundLayer() {
           bleed outside the chrome and create a visible "box" ── */}
       <div
         className="absolute overflow-hidden"
-        style={{ left: '6.5vw', right: '6.5vw', top: '17.5vh', bottom: '15vh' }}
+        style={{ left: '3vw', right: '3vw', top: '7vh', bottom: '7vh' }}
       >
         {backgroundType === 'video' && backgroundPath ? (
           <video

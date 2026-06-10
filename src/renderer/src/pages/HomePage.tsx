@@ -121,10 +121,10 @@ export default function HomePage() {
       <div
         style={{
           position: 'absolute',
-          right: '4vw',
+          right: '2vw',
           top: '2vh',
           width: '24vw',
-          bottom: '18vh',
+          bottom: '12vh',
           zIndex: 30,
         }}
       >
@@ -233,9 +233,9 @@ export default function HomePage() {
           buttonDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:brightness-125 active:scale-95'
         )}
         style={{
-          bottom: '10.5vh',
-          width: '20vw',
-          height: '7vh',
+          bottom: '3.5vh',
+          width: '15vw',
+          height: '4.5vh',
           background: 'transparent',
           border: 'none',
           position: 'absolute',
@@ -253,15 +253,15 @@ export default function HomePage() {
         {(isLaunching || isPatching) ? (
           <span
             className="flex items-center justify-center gap-2 text-white"
-            style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: 900, fontSize: '1.5rem', letterSpacing: '0.25em' }}
+            style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: 900, fontSize: '0.95rem', letterSpacing: '0.2em' }}
           >
-            <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+            <span className="w-3 h-3 border-2 border-white/40 border-t-white rounded-full animate-spin" />
             {buttonLabel}
           </span>
         ) : isError ? (
           <span
             className="flex items-center justify-center text-[#ff6060]"
-            style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: 900, fontSize: '1.5rem', letterSpacing: '0.25em' }}
+            style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: 900, fontSize: '1rem', letterSpacing: '0.25em' }}
           >
             {buttonLabel}
           </span>
@@ -271,9 +271,9 @@ export default function HomePage() {
             style={{
               fontFamily: "'Orbitron', sans-serif",
               fontWeight: 900,
-              fontSize: '1.75rem',
+              fontSize: '1.1rem',
               letterSpacing: '0.3em',
-              textShadow: '0 0 12px rgba(0,232,202,0.7), 0 2px 4px rgba(0,0,0,0.9)',
+              textShadow: '0 0 12px rgba(0,232,202,0.9), 0 2px 4px rgba(0,0,0,0.95)',
             }}
           >
             {buttonLabel}
