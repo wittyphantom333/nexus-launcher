@@ -18,6 +18,7 @@ export default function SettingsPage() {
   const [form, setForm] = useState<Partial<SettingsType>>({})
   const [saved, setSaved] = useState(false)
   const [pathError, setPathError] = useState<string | null>(null)
+  const [updateCheckMsg, setUpdateCheckMsg] = useState<string>('')
 
   useEffect(() => { setForm({ ...settings }) }, [settings])
 
@@ -143,12 +144,31 @@ export default function SettingsPage() {
               <p>Built with Electron + React + TypeScript</p>
               <p>Licensed under AGPL-3.0</p>
             </div>
-            <button
-              onClick={() => window.electron.openExternal('https://github.com/wittyphantom333/nexus-launcher')}
-              className="text-[#40ead0] text-xs hover:opacity-80 transition-opacity"
-            >
-              View on GitHub
-            </button>
+            <div className="flex items-center gap-4 pt-2">
+              <button
+                onClick={() => window.electron.openExternal('https://github.com/wittyphantom333/nexus-launcher')}
+                className="text-[#40ead0] text-xs hover:opacity-80 transition-opacity"
+              >
+                View on GitHub
+              </button>
+              <button
+                onClick={async () => {
+                  setUpdateCheckMsg('Checking…')
+                  const res = await window.electron.checkForUpdates()
+                  if (res.dev) setUpdateCheckMsg('Updates disabled in dev mode')
+                  else if (res.error) setUpdateCheckMsg(`Error: ${res.error}`)
+                  else if (res.ok) setUpdateCheckMsg(res.version ? `Latest: v${res.version}` : 'You are up to date')
+                  else setUpdateCheckMsg('You are up to date')
+                  setTimeout(() => setUpdateCheckMsg(''), 4000)
+                }}
+                className="text-[#40ead0] text-xs hover:opacity-80 transition-opacity"
+              >
+                Check for Updates
+              </button>
+              {updateCheckMsg && (
+                <span className="text-[#5a9080] text-xs">{updateCheckMsg}</span>
+              )}
+            </div>
           </div>
         )}
       </div>

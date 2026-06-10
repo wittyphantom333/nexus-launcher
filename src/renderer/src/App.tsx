@@ -28,6 +28,9 @@ export default function App() {
     window.electron.onUpdateReady(() => {
       setUpdateState('ready')
     })
+    window.electron.onUpdateError(message => {
+      setUpdateState('error', { version: '', error: message })
+    })
   }, [])
 
   if (!initialized) return <InitScreen />

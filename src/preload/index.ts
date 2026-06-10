@@ -73,12 +73,21 @@ const api = {
   onUpdateAvailable: (cb: (info: { version: string }) => void): void => {
     ipcRenderer.on('update:available', (_, data) => cb(data))
   },
+  onUpdateNone: (cb: () => void): void => {
+    ipcRenderer.on('update:none', () => cb())
+  },
   onUpdateDownloading: (cb: (percent: number) => void): void => {
     ipcRenderer.on('update:downloading', (_, pct) => cb(pct))
   },
   onUpdateReady: (cb: () => void): void => {
     ipcRenderer.on('update:ready', () => cb())
   },
+  onUpdateError: (cb: (message: string) => void): void => {
+    ipcRenderer.on('update:error', (_, msg) => cb(msg))
+  },
+  checkForUpdates: (): Promise<{ ok?: boolean; dev?: boolean; version?: string | null; error?: string }> =>
+    ipcRenderer.invoke('update:check'),
+  downloadUpdate: (): void => ipcRenderer.send('update:download'),
   installUpdate: (): void => ipcRenderer.send('update:install'),
 
   // ─── Window ────────────────────────────────────────────────────────────

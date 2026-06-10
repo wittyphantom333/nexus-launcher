@@ -93,10 +93,11 @@ export interface Character {
 }
 
 // ─── Update ────────────────────────────────────────────────────────────────
-export type UpdateState = 'idle' | 'available' | 'downloading' | 'ready'
+export type UpdateState = 'idle' | 'available' | 'downloading' | 'ready' | 'error'
 export interface UpdateInfo {
   version: string
   percent?: number
+  error?: string
 }
 
 // ─── Launcher ──────────────────────────────────────────────────────────────

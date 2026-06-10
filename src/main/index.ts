@@ -77,6 +77,9 @@ function setupAutoUpdater(): void {
   autoUpdater.on('update-available', info => {
     mainWindow?.webContents.send('update:available', info)
   })
+  autoUpdater.on('update-not-available', () => {
+    mainWindow?.webContents.send('update:none')
+  })
   autoUpdater.on('download-progress', progress => {
     mainWindow?.webContents.send('update:downloading', progress.percent)
   })
@@ -85,6 +88,7 @@ function setupAutoUpdater(): void {
   })
   autoUpdater.on('error', err => {
     console.error('AutoUpdater error:', err)
+    mainWindow?.webContents.send('update:error', err.message)
   })
 
   // Check for updates 5s after startup (non-dev only)
@@ -93,7 +97,26 @@ function setupAutoUpdater(): void {
   }
 }
 
-// IPC: install update
+// IPC: manual check for updates
+ipcMain.handle('update:check', async () => {
+  if (is.dev) return { dev: true }
+  try {
+    const result = await autoUpdater.checkForUpdates()
+    return { ok: true, version: result?.updateInfo.version ?? null }
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) }
+  }
+})
+
+// IPC: trigger download of an available update
+ipcMain.on('update:download', () => {
+  autoUpdater.downloadUpdate().catch(err => {
+    console.error('downloadUpdate failed:', err)
+    mainWindow?.webContents.send('update:error', err.message)
+  })
+})
+
+// IPC: install update (quit + apply)
 ipcMain.on('update:install', () => {
   autoUpdater.quitAndInstall()
 })

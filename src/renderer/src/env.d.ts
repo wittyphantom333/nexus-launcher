@@ -48,8 +48,12 @@ declare global {
 
       // Auto-updater
       onUpdateAvailable: (cb: (info: { version: string }) => void) => void
+      onUpdateNone: (cb: () => void) => void
       onUpdateDownloading: (cb: (percent: number) => void) => void
       onUpdateReady: (cb: () => void) => void
+      onUpdateError: (cb: (message: string) => void) => void
+      checkForUpdates: () => Promise<{ ok?: boolean; dev?: boolean; version?: string | null; error?: string }>
+      downloadUpdate: () => void
       installUpdate: () => void
 
       // Window controls
