@@ -121,10 +121,10 @@ export default function HomePage() {
       <div
         style={{
           position: 'absolute',
-          right: '2vw',
-          top: '2vh',
-          width: '24vw',
-          bottom: '12vh',
+          right: '3vw',
+          top: '3vh',
+          width: '22vw',
+          bottom: '15vh',
           zIndex: 30,
         }}
       >
@@ -233,7 +233,7 @@ export default function HomePage() {
           buttonDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:brightness-125 active:scale-95'
         )}
         style={{
-          bottom: '3.5vh',
+          bottom: '7vh',
           width: '15vw',
           height: '4.5vh',
           background: 'transparent',
