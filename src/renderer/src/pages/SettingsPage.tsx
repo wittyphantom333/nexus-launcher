@@ -49,7 +49,7 @@ export default function SettingsPage() {
     /* Opaque dark fill that stops above the bottom chrome */
     <div
       className="flex flex-col"
-      style={{ background: '#0a1614', height: 'calc(100% - 17vh)' }}
+      style={{ background: '#0a1614', height: 'calc(100% - 13vh)' }}
     >
       {/* Tab strip */}
       <div

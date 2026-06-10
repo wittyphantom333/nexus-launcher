@@ -1,12 +1,22 @@
-import { Download, X, AlertTriangle, RotateCw } from 'lucide-react'
+import { useEffect } from 'react'
+import { Download, X, AlertTriangle } from 'lucide-react'
 import { useStore } from '../store'
 
 /**
  * Update modal — overlays the launcher with a centered card.
- * Shown when an update is available, downloading, ready, or failed.
+ * Streamlined flow: user clicks "Update Now" → download progress shown →
+ * when download completes, the launcher restarts and installs automatically.
  */
 export default function UpdateBanner() {
   const { updateState, updateInfo, setUpdateState } = useStore()
+
+  // Auto-install once the download completes
+  useEffect(() => {
+    if (updateState !== 'ready') return
+    // tiny delay so the "Installing…" frame paints before quit
+    const t = setTimeout(() => window.electron.installUpdate(), 500)
+    return () => clearTimeout(t)
+  }, [updateState])
 
   if (updateState === 'idle') return null
 
@@ -27,8 +37,8 @@ export default function UpdateBanner() {
           padding: '24px 28px',
         }}
       >
-        {/* Close button (only when not actively downloading or required) */}
-        {updateState !== 'downloading' && (
+        {/* Close button (only when not actively downloading/installing) */}
+        {updateState !== 'downloading' && updateState !== 'ready' && (
           <button
             onClick={dismiss}
             className="absolute top-3 right-3 text-[#5a9a8a] hover:text-[#80c0b8] transition-colors"
@@ -51,7 +61,7 @@ export default function UpdateBanner() {
               <span className="text-[#00e8ca] font-semibold">
                 v{updateInfo?.version}
               </span>{' '}
-              is ready to download.
+              is ready to install.
             </p>
             <div className="flex justify-end gap-2 pt-2">
               <button
@@ -68,7 +78,7 @@ export default function UpdateBanner() {
                 className="px-4 py-2 text-xs font-bold rounded transition-colors"
                 style={{ background: '#00c8b0', color: '#0a1614' }}
               >
-                Download Now
+                Update Now
               </button>
             </div>
           </div>
@@ -79,11 +89,11 @@ export default function UpdateBanner() {
             <div className="flex items-center gap-2">
               <Download className="w-5 h-5 text-[#00e8ca] animate-pulse" />
               <h2 className="text-[#40ead0] font-bold text-base tracking-wide">
-                Downloading Update
+                Updating…
               </h2>
             </div>
             <p className="text-[#90c8a8] text-sm">
-              {Math.round(updateInfo?.percent ?? 0)}% complete
+              Downloading {Math.round(updateInfo?.percent ?? 0)}%
             </p>
             <div className="h-2 bg-[#1a2a28] rounded-full overflow-hidden">
               <div
@@ -95,34 +105,25 @@ export default function UpdateBanner() {
                 }}
               />
             </div>
+            <p className="text-[#5a9080] text-xs">
+              The launcher will restart automatically when the download completes.
+            </p>
           </div>
         )}
 
         {updateState === 'ready' && (
           <div className="space-y-3">
             <div className="flex items-center gap-2">
-              <RotateCw className="w-5 h-5 text-[#00e8ca]" />
+              <Download className="w-5 h-5 text-[#00e8ca] animate-pulse" />
               <h2 className="text-[#40ead0] font-bold text-base tracking-wide">
-                Update Ready
+                Installing…
               </h2>
             </div>
             <p className="text-[#90c8a8] text-sm leading-relaxed">
-              The update has been downloaded. Restart the launcher to apply it.
+              The launcher will restart in a moment to finish installing.
             </p>
-            <div className="flex justify-end gap-2 pt-2">
-              <button
-                onClick={dismiss}
-                className="px-4 py-2 text-xs font-semibold text-[#5a9a8a] hover:text-[#80c0b8] transition-colors"
-              >
-                Later
-              </button>
-              <button
-                onClick={() => window.electron.installUpdate()}
-                className="px-4 py-2 text-xs font-bold rounded transition-colors"
-                style={{ background: '#00c8b0', color: '#0a1614' }}
-              >
-                Restart & Install
-              </button>
+            <div className="flex justify-center pt-2">
+              <span className="w-5 h-5 border-2 border-[#1a2a28] border-t-[#00c8b0] rounded-full animate-spin" />
             </div>
           </div>
         )}

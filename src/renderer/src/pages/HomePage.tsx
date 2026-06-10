@@ -235,15 +235,21 @@ export default function HomePage() {
             {launchError}
           </span>
         )}
-        {/* Show spinner + state text only when busy */}
-        {(isLaunching || isPatching) && (
-          <span className="flex items-center justify-center gap-2 text-white font-black text-sm tracking-widest">
+        {/* Idle / busy / error: always show the label text on the drawn capsule */}
+        {(isLaunching || isPatching) ? (
+          <span className="flex items-center justify-center gap-2 text-white font-black text-base tracking-[0.2em]">
             <span className="w-3.5 h-3.5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
             {buttonLabel}
           </span>
-        )}
-        {isError && (
-          <span className="flex items-center justify-center text-[#ff6060] font-black text-xs tracking-widest">
+        ) : isError ? (
+          <span className="flex items-center justify-center text-[#ff6060] font-black text-sm tracking-[0.2em]">
+            {buttonLabel}
+          </span>
+        ) : (
+          <span
+            className="flex items-center justify-center text-white font-black text-base tracking-[0.25em]"
+            style={{ textShadow: '0 0 10px rgba(0,232,202,0.6), 0 1px 2px rgba(0,0,0,0.8)' }}
+          >
             {buttonLabel}
           </span>
         )}

@@ -76,7 +76,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       {/* Nav items — rendered over the empty nav strip */}
       <nav
         className="absolute inset-x-0 z-30 flex items-stretch"
-        style={{ top: '13.5vh', height: '5vh', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
+        style={{ top: '11.5vh', height: '5vh', WebkitAppRegion: 'no-drag' } as React.CSSProperties}
       >
         {/* left spacer — clears the window control dots */}
         <div style={{ width: '18vw', flexShrink: 0 }} />
@@ -113,7 +113,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           Inset to frame interior so it can't cover the drawn chrome. */}
       <div
         className="absolute bottom-0"
-        style={{ top: '18vh', left: '6.5vw', right: '6.5vw', zIndex: 25 }}
+        style={{ top: '16vh', left: '6.5vw', right: '6.5vw', zIndex: 25 }}
       >
         {children}
       </div>
