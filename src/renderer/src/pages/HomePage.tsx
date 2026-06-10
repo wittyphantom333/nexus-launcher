@@ -121,14 +121,14 @@ export default function HomePage() {
         className="news-scroll"
         style={{
           position: 'absolute',
-          right: '1vw',
+          right: '1.5vw',
           top: '11vh',
-          width: '28vw',
-          bottom: '14vh',
+          width: '27.5vw',
+          bottom: '17vh',
           overflowY: 'auto',
           overflowX: 'hidden',
           paddingLeft: '2.5vw',
-          paddingRight: '0.5vw',
+          paddingRight: '1vw',
           paddingBottom: '1vh',
           paddingTop: '0.5vh',
           scrollbarWidth: 'thin',
