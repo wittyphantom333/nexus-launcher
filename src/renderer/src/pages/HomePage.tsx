@@ -124,7 +124,7 @@ export default function HomePage() {
           right: '3vw',
           top: '3vh',
           width: '22vw',
-          bottom: '15vh',
+          bottom: '20vh',
           zIndex: 30,
         }}
       >
@@ -233,7 +233,7 @@ export default function HomePage() {
           buttonDisabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer hover:brightness-125 active:scale-95'
         )}
         style={{
-          bottom: '7vh',
+          bottom: '11vh',
           width: '15vw',
           height: '4.5vh',
           background: 'transparent',
