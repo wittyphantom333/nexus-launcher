@@ -116,7 +116,7 @@ export default function HomePage() {
       {/* ── Background image slider (fills left content area) ── */}
       <ContentSlider slides={SLIDES} interval={7} />
 
-      {/* NEWS panel — single scrollable div positioned below drawn header */}
+      {/* NEWS panel — z:30 above frame, with internal padding for clean alignment */}
       <div
         className="news-scroll"
         style={{
@@ -124,14 +124,16 @@ export default function HomePage() {
           right: '1.5vw',
           top: '11vh',
           width: '27.5vw',
-          bottom: '17vh',
+          bottom: '18vh',
           overflowY: 'auto',
           overflowX: 'hidden',
           paddingLeft: '2.5vw',
           paddingRight: '1vw',
-          paddingBottom: '1vh',
-          paddingTop: '0.5vh',
+          paddingBottom: '2vh',
+          paddingTop: '3vh',
           scrollbarWidth: 'thin',
+          scrollbarColor: 'rgba(0,200,176,0.4) transparent',
+          zIndex: 30,
         }}
       >
         <div className="space-y-5">
@@ -217,6 +219,7 @@ export default function HomePage() {
           background: 'transparent',
           border: 'none',
           position: 'absolute',
+          zIndex: 30,
         }}
       >
         {/* Error text floats above the PLAY button so it's above the frame PNG */}
