@@ -26,18 +26,22 @@ export default function HomePage() {
     news,
     setNews,
     patchProgress,
+    activeServer,
   } = useStore()
 
-  // ── Fetch news via IPC (main-process axios — bypasses renderer file:// origin issues) ──
+  // ── Fetch news: prefer active server's newsUrl, fall back to launcher news ──
   useEffect(() => {
-    window.electron.fetchNews(GITHUB_NEWS_URL)
+    const url = activeServer?.newsUrl?.trim() || GITHUB_NEWS_URL
+    window.electron.fetchNews(url)
       .then(res => {
         if (res.success && Array.isArray(res.data)) {
           setNews(res.data as NewsItem[])
+        } else {
+          setNews([])
         }
       })
-      .catch(() => {})
-  }, [])
+      .catch(() => setNews([]))
+  }, [activeServer?.id, activeServer?.newsUrl])
 
   return (
     <div className="h-full w-full relative">
@@ -86,7 +90,9 @@ export default function HomePage() {
           <div className="space-y-5">
           {news.length === 0 && (
             <p className="text-[#2a5a50] text-xs text-center pt-6 leading-relaxed">
-              No news yet
+              {activeServer?.newsUrl
+                ? 'No news from this server yet'
+                : 'No news yet'}
             </p>
           )}
           {news.map(item => (
