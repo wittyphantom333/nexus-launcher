@@ -69,7 +69,12 @@ export default function AddServerModal({ onClose, server }: Props) {
   ]
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center">
+    /* Modal overlay: positioned absolutely inside the launcher chrome so the
+       backdrop doesn't bleed into the transparent window borders. */
+    <div
+      className="absolute z-50 flex items-center justify-center"
+      style={{ top: '6vh', left: '5vw', right: '5vw', bottom: '14vh' }}
+    >
       {/* Backdrop */}
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
 

@@ -113,7 +113,10 @@ export default function ServersPage() {
 
       {/* Confirm delete */}
       {confirmDelete && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center">
+        <div
+          className="absolute z-50 flex items-center justify-center"
+          style={{ inset: 0 }}
+        >
           <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setConfirmDelete(null)} />
           <div className="relative z-10 nexus-card p-5 max-w-sm w-full mx-4">
             <h3 className="font-display font-bold text-nexus-text-primary mb-2">Remove Server?</h3>
