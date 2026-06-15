@@ -1,0 +1,23 @@
+[
+  {
+    "id": "example-1",
+    "title": "Server-Specific Welcome",
+    "summary": "This news item is loaded from server-examples/news.json on GitHub. Each server can have its own news feed by pointing its News JSON URL at a different file.",
+    "date": "2026-06-15T00:00:00Z",
+    "isPinned": true
+  },
+  {
+    "id": "example-2",
+    "title": "Weekly Event: Double XP",
+    "summary": "From Friday 6 PM through Sunday midnight server time, all XP gains are doubled. Great time to level alts!",
+    "url": "https://github.com/wittyphantom333/nexus-launcher",
+    "date": "2026-06-14T18:00:00Z"
+  },
+  {
+    "id": "example-3",
+    "title": "Patch 1.2.0 Notes",
+    "summary": "1. Fixed Esper aura stacking bug.\n2. Adjusted Warrior bleed damage.\n3. New housing decor unlocked from Daggerstone weekly quest.",
+    "url": "https://github.com/wittyphantom333/nexus-launcher/releases",
+    "date": "2026-06-10T12:00:00Z"
+  }
+]

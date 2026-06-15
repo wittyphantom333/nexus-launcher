@@ -1,0 +1,17 @@
+{
+  "version": "1.0.0",
+  "baseUrl": "https://cdn.example.com/wildstar-patches/",
+  "files": [
+    {
+      "path": "Client64/CustomConfig.xml",
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size": 0
+    },
+    {
+      "path": "Client64/ServerAddress.txt",
+      "hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "size": 0,
+      "url": "https://example.com/override-url-for-this-specific-file.txt"
+    }
+  ]
+}
