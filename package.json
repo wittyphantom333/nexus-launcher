@@ -114,8 +114,6 @@
         }
       ],
       "icon": "build/icon.ico",
-      "signAndEditExecutable": false,
-      "sign": null,
       "artifactName": "Nexus-Launcher-${version}.${ext}"
     },
     "nsis": {
