@@ -1,24 +1,28 @@
 import { useState } from 'react'
 import { v4 as uuidv4 } from 'uuid'
-import { X, Plus, Globe } from 'lucide-react'
+import { X, Plus, Check, Globe } from 'lucide-react'
 import { useStore } from '../store'
 import type { ServerProfile } from '../types'
 
 interface Props {
   onClose: () => void
+  /** When provided, the modal opens in edit mode for this server. */
+  server?: ServerProfile
 }
 
-export default function AddServerModal({ onClose }: Props) {
-  const { addServer } = useStore()
+export default function AddServerModal({ onClose, server }: Props) {
+  const { addServer, updateServer } = useStore()
+  const isEdit = !!server
+
   const [form, setForm] = useState({
-    name: '',
-    host: '',
-    port: '24000',
-    description: '',
-    website: '',
-    newsUrl: '',
-    patchManifestUrl: '',
-    statusUrl: ''
+    name: server?.name ?? '',
+    host: server?.host ?? '',
+    port: String(server?.port ?? 24000),
+    description: server?.description ?? '',
+    website: server?.website ?? '',
+    newsUrl: server?.newsUrl ?? '',
+    patchManifestUrl: server?.patchManifestUrl ?? '',
+    statusUrl: server?.statusUrl ?? ''
   })
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
@@ -32,8 +36,8 @@ export default function AddServerModal({ onClose }: Props) {
     setSaving(true)
     setError('')
 
-    const server: ServerProfile = {
-      id: uuidv4(),
+    const next: ServerProfile = {
+      id: server?.id ?? uuidv4(),
       name: form.name.trim(),
       host: form.host.trim(),
       port,
@@ -42,11 +46,13 @@ export default function AddServerModal({ onClose }: Props) {
       newsUrl: form.newsUrl.trim() || undefined,
       patchManifestUrl: form.patchManifestUrl.trim() || undefined,
       statusUrl: form.statusUrl.trim() || undefined,
-      isCustom: true,
-      addedAt: new Date().toISOString()
+      isCustom: server?.isCustom ?? true,
+      addedAt: server?.addedAt ?? new Date().toISOString()
     }
 
-    await addServer(server)
+    if (isEdit) await updateServer(next)
+    else await addServer(next)
+
     setSaving(false)
     onClose()
   }
@@ -73,7 +79,9 @@ export default function AddServerModal({ onClose }: Props) {
         <div className="flex items-center justify-between mb-5">
           <div className="flex items-center gap-2">
             <Globe className="w-4 h-4 text-nexus-primary" />
-            <h2 className="font-display font-bold text-lg text-nexus-text-primary">Add Server</h2>
+            <h2 className="font-display font-bold text-lg text-nexus-text-primary">
+              {isEdit ? 'Edit Server' : 'Add Server'}
+            </h2>
           </div>
           <button onClick={onClose} className="text-nexus-text-muted hover:text-nexus-text-primary transition-colors">
             <X className="w-4 h-4" />
@@ -104,8 +112,8 @@ export default function AddServerModal({ onClose }: Props) {
         <div className="flex items-center justify-end gap-2 mt-5 pt-4 border-t border-nexus-border">
           <button onClick={onClose} className="btn-ghost">Cancel</button>
           <button onClick={handleSubmit} disabled={saving} className="btn-primary flex items-center gap-2">
-            <Plus className="w-4 h-4" />
-            {saving ? 'Adding…' : 'Add Server'}
+            {isEdit ? <Check className="w-4 h-4" /> : <Plus className="w-4 h-4" />}
+            {saving ? (isEdit ? 'Saving…' : 'Adding…') : (isEdit ? 'Save Changes' : 'Add Server')}
           </button>
         </div>
       </div>

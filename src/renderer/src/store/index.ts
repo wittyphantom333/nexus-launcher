@@ -32,6 +32,7 @@ interface LauncherStore {
   serverStatuses: Record<string, ServerStatus>
   setServerStatus: (id: string, status: ServerStatus) => void
   addServer: (server: ServerProfile) => Promise<void>
+  updateServer: (server: ServerProfile) => Promise<void>
   removeServer: (id: string) => Promise<void>
   setActiveServer: (id: string) => Promise<void>
 
@@ -113,6 +114,11 @@ export const useStore = create<LauncherStore>()(
         servers,
         activeServerId: settings.activeServerId || server.id
       })
+    },
+    updateServer: async server => {
+      const { settings } = get()
+      const servers = settings.servers.map(s => (s.id === server.id ? server : s))
+      await get().updateSettings({ servers })
     },
     removeServer: async id => {
       const { settings } = get()

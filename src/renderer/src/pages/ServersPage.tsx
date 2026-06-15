@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { Plus, Trash2, Globe, Star } from 'lucide-react'
+import { Plus, Trash2, Globe, Star, Pencil } from 'lucide-react'
 import { useStore } from '../store'
 import ServerCard from '../components/ServerCard'
 import AddServerModal from '../components/AddServerModal'
+import type { ServerProfile } from '../types'
 
 export default function ServersPage() {
   const { settings, activeServer, setActiveServer, removeServer } = useStore()
   const [showAdd, setShowAdd] = useState(false)
+  const [editTarget, setEditTarget] = useState<ServerProfile | null>(null)
   const [confirmDelete, setConfirmDelete] = useState<string | null>(null)
 
   const handleRemove = async (id: string) => {
@@ -79,6 +81,14 @@ export default function ServersPage() {
                 </button>
               )}
 
+              <button
+                onClick={() => setEditTarget(server)}
+                title="Edit server"
+                className="w-8 h-8 flex items-center justify-center rounded-xl text-nexus-text-muted hover:text-nexus-primary hover:bg-nexus-primary/10 border border-nexus-border transition-colors"
+              >
+                <Pencil className="w-3.5 h-3.5" />
+              </button>
+
               {server.isCustom && (
                 <button
                   onClick={() => setConfirmDelete(server.id)}
@@ -95,6 +105,11 @@ export default function ServersPage() {
 
       {/* Add modal */}
       {showAdd && <AddServerModal onClose={() => setShowAdd(false)} />}
+
+      {/* Edit modal */}
+      {editTarget && (
+        <AddServerModal server={editTarget} onClose={() => setEditTarget(null)} />
+      )}
 
       {/* Confirm delete */}
       {confirmDelete && (
