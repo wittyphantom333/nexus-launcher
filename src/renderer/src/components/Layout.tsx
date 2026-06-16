@@ -19,7 +19,7 @@ import launcherBg from '../assets/launcher-bg.png'
 
 const NAV_ITEMS = [
   { path: '/', label: 'THE GAME' },
-  { path: '/servers', label: 'COMMUNITY' },
+  { path: '/servers', label: 'SERVERS' },
   { path: '/patch-notes', label: 'PATCH NOTES' },
   { path: '/settings', label: 'OPTIONS' },
 ]
